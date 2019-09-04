@@ -1,23 +1,21 @@
-# LMC GIS
-
-## lmc-js-map
+# LMC MAPS JS
 
 Interactive map using vector tiles with GL styles based on Tileserver GL, OpenMapTiles, Mapbox GL JS.
 
-### Install
+## Install
 
 ```
 npm install
 ```
 
-### Dev
+## Dev
 
 ```
 npm start
 ```
 > run on `localhost:3001`
 
-### Build
+## Build
 
 Build lib bundle to `dist` folder.
 
