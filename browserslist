@@ -1,0 +1,6 @@
+# Browsers that we support
+# Used by autoprefixer
+# https://github.com/ai/browserslist#config-file
+
+last 2 versions
+not ie < 11

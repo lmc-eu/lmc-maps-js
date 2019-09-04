@@ -1,0 +1,15 @@
+// Struct
+
+.lmc-maps__marker {
+    width: 50px;
+    height: 70px;
+    display: grid;
+    scroll-behavior: smooth;
+}
+
+
+// Skin
+
+.lmc-maps__marker {
+    background-image: url(../../assets/images/marker.png);
+}
