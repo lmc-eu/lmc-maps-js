@@ -8,6 +8,7 @@ class LmcMaps {
     map;
     coords = [];
     zoom = 0;
+    url = 'https://tileserver.lmc.cz/styles/klokantech-basic/style.json';
 
     constructor(container, coords, zoom) {
         this.container = container;
@@ -20,7 +21,7 @@ class LmcMaps {
     init() {
         this.map = new mapboxgl.Map({
             container: this.container,
-            style: 'http://gis-tileserver-common-stable.service.dev1-services.consul:26452/styles/klokantech-basic/style.json',
+            style: this.url,
             minZoom: 6,
             center: this.coords,
             zoom: this.zoom,

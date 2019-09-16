@@ -51,6 +51,8 @@ function () {
 
     _defineProperty(this, "zoom", 0);
 
+    _defineProperty(this, "url", 'https://tileserver.lmc.cz/styles/klokantech-basic/style.json');
+
     this.container = container;
     this.coords = coords;
     this.zoom = zoom;
@@ -62,7 +64,7 @@ function () {
     value: function init() {
       this.map = new mapboxgl.Map({
         container: this.container,
-        style: 'http://gis-tileserver-common-stable.service.dev1-services.consul:26452/styles/klokantech-basic/style.json',
+        style: this.url,
         minZoom: 6,
         center: this.coords,
         zoom: this.zoom,
