@@ -41,25 +41,34 @@ function _defineProperty(obj, key, value) {
   return obj;
 }
 
+// STYLES
+var STYLES_URL = "https://tileserver.lmc.cz/styles";
+var STYLES = ['klokantech-basic', 'lmc-default'];
+var LANGUAGES = ['cs', 'de', 'en', 'fi', 'pl', 'sk'];
+
 var LmcMaps =
 /*#__PURE__*/
 function () {
-  function LmcMaps(container, coords, zoom) {
+  function LmcMaps(container, options) {
     _classCallCheck(this, LmcMaps);
 
     _defineProperty(this, "container", void 0);
 
     _defineProperty(this, "map", void 0);
 
-    _defineProperty(this, "coords", []);
+    _defineProperty(this, "coords", [0, 0]);
 
     _defineProperty(this, "zoom", 0);
 
-    _defineProperty(this, "url", 'https://tileserver.lmc.cz/styles/klokantech-basic/style.json');
+    _defineProperty(this, "style", void 0);
+
+    _defineProperty(this, "lang", void 0);
 
     this.container = container;
-    this.coords = coords;
-    this.zoom = zoom;
+    this.coords = options.coords;
+    this.zoom = options.zoom;
+    this.style = "".concat(STYLES_URL, "/").concat(STYLES.indexOf(options.style) !== -1 ? options.style : STYLES[0], "/style.json");
+    this.lang = options.lang || null;
     this.init();
   }
 
@@ -68,15 +77,52 @@ function () {
     value: function init() {
       this.map = new mapboxgl.Map({
         container: this.container,
-        style: this.url,
+        style: this.style,
         minZoom: 6,
         center: this.coords,
         zoom: this.zoom,
         renderWorldCopies: false,
         pitchWithRotate: false
       });
+      this.getEvents();
       this.setControls();
       this.renderMarker(this.coords);
+    }
+  }, {
+    key: "getEvents",
+    value: function getEvents() {
+      var _this = this;
+
+      this.map.on('load', function () {
+        LANGUAGES.indexOf(_this.lang) !== -1 && _this.setLanguage(_this.lang);
+      });
+    }
+  }, {
+    key: "setLanguage",
+    value: function setLanguage(lang) {
+      var _this2 = this;
+
+      var style = JSON.parse(JSON.stringify(this.map.getStyle()));
+      var nameFallbackLayers = [];
+      style.layers.forEach(function (layer, index) {
+        if (layer.id.indexOf('label') !== -1 && layer.layout['text-field']) {
+          nameFallbackLayers.push([index, JSON.parse(JSON.stringify(layer))]);
+
+          _this2.addLayerFilter(layer, ['has', "name:".concat(lang)]);
+
+          layer.layout['text-field'] = "{name:".concat(lang, "}");
+        }
+      });
+      nameFallbackLayers.forEach(function (layer, index) {
+        layer[1].id = layer[1].id + '-langFallback';
+
+        _this2.addLayerFilter(layer[1], ['!has', "name:".concat(lang)]);
+
+        style.layers.splice(layer[0] + index + 1, 0, layer[1]);
+      });
+      this.map.setStyle(style, {
+        diff: true
+      });
     }
   }, {
     key: "setControls",
@@ -104,6 +150,17 @@ function () {
       var el = document.createElement('div');
       el.className = 'lmc-maps__marker';
       return el;
+    }
+  }, {
+    key: "addLayerFilter",
+    value: function addLayerFilter(layer, filter) {
+      if (!layer.filter) {
+        layer.filter = filter;
+      } else if (layer.filter[0] === 'all') {
+        layer.filter.push(filter);
+      } else {
+        layer.filter = ['all', layer.filter, filter];
+      }
     }
   }]);
 

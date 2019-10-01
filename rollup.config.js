@@ -2,6 +2,7 @@ import babel from 'rollup-plugin-babel';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import postcss from 'rollup-plugin-postcss';
+import replace from 'rollup-plugin-replace';
 
 export default {
     input: 'src/lib/lmc-maps.js',
@@ -26,6 +27,9 @@ export default {
     ],
     plugins: [
         babel(),
+        replace({
+            TILESERVER_STYLES_URL: JSON.stringify('https://tileserver.lmc.cz/styles')
+        }),
         commonjs(),
         resolve(),
         postcss({
