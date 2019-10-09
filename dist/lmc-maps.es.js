@@ -74,7 +74,6 @@ function () {
       this.map = new mapboxgl.Map({
         container: this.container,
         style: this.style,
-        minZoom: 6,
         center: this.coords,
         zoom: this.zoom,
         renderWorldCopies: false,

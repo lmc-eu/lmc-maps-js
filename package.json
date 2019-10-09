@@ -1,6 +1,6 @@
 {
   "name": "lmc-maps",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
   "main": "dist/lmc-maps.js",
   "module": "dist/lmc-maps.es.js",
