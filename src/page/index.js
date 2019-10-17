@@ -6,20 +6,20 @@ import './index.scss';
 
     const urlParams = new URL(window.location.href).searchParams;
 
-    const coords = [
-        urlParams.get('lng') || 15.524,
-        urlParams.get('lat') || 49.766,
-    ];
+    const coords = urlParams.get('lng') && urlParams.get('lat')
+        ? [urlParams.get('lng'), urlParams.get('lat')]
+        : null;
 
     const lang = urlParams.get('lang');
-    
-    const zoom = urlParams.get('zoom') || 7;
+    const zoom = urlParams.get('zoom');
+    const marker = urlParams.get('hasMarker') !== null;
     
     new LmcMaps('map', {
         coords,
         zoom,
         style: 'lmc-default',
-        lang
+        lang,
+        marker
     });
 
 })();

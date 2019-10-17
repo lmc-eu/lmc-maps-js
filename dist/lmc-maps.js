@@ -43,7 +43,7 @@ function _defineProperty(obj, key, value) {
 
 // STYLES
 var STYLES_URL = "https://tileserver.lmc.cz/styles";
-var STYLES = ['klokantech-basic', 'lmc-default'];
+var STYLES = ['lmc-default', 'klokantech-basic'];
 var LANGUAGES = ['cs', 'de', 'en', 'fi', 'pl', 'sk'];
 
 var LmcMaps =
@@ -56,19 +56,22 @@ function () {
 
     _defineProperty(this, "map", void 0);
 
-    _defineProperty(this, "coords", [0, 0]);
+    _defineProperty(this, "coords", void 0);
 
-    _defineProperty(this, "zoom", 0);
+    _defineProperty(this, "zoom", void 0);
 
     _defineProperty(this, "style", void 0);
 
     _defineProperty(this, "lang", void 0);
 
+    _defineProperty(this, "marker", void 0);
+
     this.container = container;
-    this.coords = options.coords;
-    this.zoom = options.zoom;
+    this.coords = options.coords || [14.4563172, 50.1028914];
+    this.zoom = options.zoom || 12;
     this.style = "".concat(STYLES_URL, "/").concat(STYLES.indexOf(options.style) !== -1 ? options.style : STYLES[0], "/style.json");
     this.lang = options.lang || null;
+    this.marker = options.marker;
     this.init();
   }
 
@@ -85,7 +88,7 @@ function () {
       });
       this.getEvents();
       this.setControls();
-      this.renderMarker(this.coords);
+      this.marker && this.renderMarker(this.coords);
     }
   }, {
     key: "getEvents",

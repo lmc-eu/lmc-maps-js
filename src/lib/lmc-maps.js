@@ -8,20 +8,22 @@ class LmcMaps {
 
     container;
     map;
-    coords = [0, 0];
-    zoom = 0;
+    coords;
+    zoom;
     style;
     lang;
+    marker;
 
     constructor(container, options) {
         this.container = container;
-        this.coords = options.coords;
-        this.zoom = options.zoom;
+        this.coords = options.coords || [14.4563172, 50.1028914];
+        this.zoom = options.zoom || 12;
 
         this.style = `${con.STYLES_URL}/${
             con.STYLES.indexOf(options.style) !== -1 ? options.style : con.STYLES[0]
         }/style.json`;
         this.lang = options.lang || null;
+        this.marker = options.marker;
 
         this.init();
     }
@@ -39,7 +41,7 @@ class LmcMaps {
         this.getEvents();
 
         this.setControls();
-        this.renderMarker(this.coords);
+        this.marker && this.renderMarker(this.coords);
     }
 
     getEvents() {

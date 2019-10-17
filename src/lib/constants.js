@@ -3,8 +3,8 @@
 export const STYLES_URL = TILESERVER_STYLES_URL;
 
 export const STYLES = [
-    'klokantech-basic', 
-    'lmc-default'
+    'lmc-default',
+    'klokantech-basic'
 ];
 
 export const LANGUAGES = [
