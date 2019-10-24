@@ -28,7 +28,7 @@ export default {
     plugins: [
         babel(),
         replace({
-            TILESERVER_STYLES_URL: JSON.stringify('https://tileserver.lmc.cz/styles')
+            TILESERVER_URL: JSON.stringify('https://tileserver.lmc.cz')
         }),
         commonjs(),
         resolve(),

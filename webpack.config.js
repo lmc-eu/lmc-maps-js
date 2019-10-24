@@ -44,7 +44,8 @@ module.exports = () => {
                 template: 'assets/index.html'
             }),
             new webpack.DefinePlugin({
-                'TILESERVER_STYLES_URL': JSON.stringify('http://localhost:8080/styles')
+                'ENV_DEV': JSON.stringify('dev'),
+                'TILESERVER_URL': JSON.stringify('http://localhost:8080')
             })
         ],
         devServer: {

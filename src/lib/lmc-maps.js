@@ -19,9 +19,9 @@ class LmcMaps {
         this.coords = options.coords || [14.4563172, 50.1028914];
         this.zoom = options.zoom || 12;
 
-        this.style = `${con.STYLES_URL}/${
+        this.style = `${con.STYLES_URL}${
             con.STYLES.indexOf(options.style) !== -1 ? options.style : con.STYLES[0]
-        }/style.json`;
+        }${typeof ENV_DEV !== 'undefined' ? '/style.json' : ''}`;
         this.lang = options.lang || null;
         this.marker = options.marker;
 

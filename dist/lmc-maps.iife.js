@@ -41,7 +41,7 @@ var LmcMaps = (function (mapboxgl) {
   }
 
   // STYLES
-  var STYLES_URL = "https://tileserver.lmc.cz/styles";
+  var STYLES_URL = "https://tileserver.lmc.cz" + '/styles/';
   var STYLES = ['lmc-default', 'klokantech-basic'];
   var LANGUAGES = ['cs', 'de', 'en', 'fi', 'pl', 'sk'];
 
@@ -68,7 +68,7 @@ var LmcMaps = (function (mapboxgl) {
       this.container = container;
       this.coords = options.coords || [14.4563172, 50.1028914];
       this.zoom = options.zoom || 12;
-      this.style = "".concat(STYLES_URL, "/").concat(STYLES.indexOf(options.style) !== -1 ? options.style : STYLES[0], "/style.json");
+      this.style = "".concat(STYLES_URL).concat(STYLES.indexOf(options.style) !== -1 ? options.style : STYLES[0]).concat(typeof ENV_DEV !== 'undefined' ? '/style.json' : '');
       this.lang = options.lang || null;
       this.marker = options.marker;
       this.init();

@@ -1,6 +1,6 @@
 // STYLES
 
-export const STYLES_URL = TILESERVER_STYLES_URL;
+export const STYLES_URL = TILESERVER_URL + '/styles/';
 
 export const STYLES = [
     'lmc-default',
