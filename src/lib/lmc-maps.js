@@ -21,7 +21,7 @@ class LmcMaps {
 
         this.style = `${con.STYLES_URL}${
             con.STYLES.indexOf(options.style) !== -1 ? options.style : con.STYLES[0]
-        }`;
+        }/style.json`;
         this.lang = options.lang || null;
         this.marker = options.marker;
 

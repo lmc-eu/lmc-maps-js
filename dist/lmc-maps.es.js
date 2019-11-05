@@ -65,7 +65,7 @@ function () {
     this.container = container;
     this.coords = options.coords || [14.4563172, 50.1028914];
     this.zoom = options.zoom || 12;
-    this.style = "".concat(STYLES_URL).concat(STYLES.indexOf(options.style) !== -1 ? options.style : STYLES[0]);
+    this.style = "".concat(STYLES_URL).concat(STYLES.indexOf(options.style) !== -1 ? options.style : STYLES[0], "/style.json");
     this.lang = options.lang || null;
     this.marker = options.marker;
     this.init();
