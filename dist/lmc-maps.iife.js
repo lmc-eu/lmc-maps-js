@@ -68,7 +68,7 @@ var LmcMaps = (function (mapboxgl) {
       this.container = container;
       this.coords = options.coords || [14.4563172, 50.1028914];
       this.zoom = options.zoom || 12;
-      this.style = "".concat(STYLES_URL).concat(STYLES.indexOf(options.style) !== -1 ? options.style : STYLES[0]).concat(typeof ENV_DEV !== 'undefined' ? '/style.json' : '');
+      this.style = "".concat(STYLES_URL).concat(STYLES.indexOf(options.style) !== -1 ? options.style : STYLES[0]);
       this.lang = options.lang || null;
       this.marker = options.marker;
       this.init();
@@ -83,7 +83,17 @@ var LmcMaps = (function (mapboxgl) {
           center: this.coords,
           zoom: this.zoom,
           renderWorldCopies: false,
-          pitchWithRotate: false
+          pitchWithRotate: false,
+          transformRequest: function transformRequest(url, resourceType) {
+            if (url.startsWith("https://tileserver.lmc.cz") && resourceType === 'Tile') {
+              return {
+                url: url,
+                headers: {
+                  'Authorization': 'Bearer ' + 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ik1FVXdOVGd5TkVVeFFUVTBRa1V4T1RnME1qbEdOa1JDUWpFMU16SXhSREZCUkRVeVJrRTBRZyJ9.eyJpc3MiOiJodHRwczovL2Rldi1qaWh5LmF1dGgwLmNvbS8iLCJzdWIiOiJ1dXA5c3A1aDdrbHVSWEVIbWh2VXJlOTJIZHJrbFZxY0BjbGllbnRzIiwiYXVkIjoiaHR0cHM6Ly9kZXYtamloeS5hdXRoMC5jb20vYXBpL3YyLyIsImlhdCI6MTU3Mjk0MDY0NCwiZXhwIjoxNTc1NTMyNjQ0LCJhenAiOiJ1dXA5c3A1aDdrbHVSWEVIbWh2VXJlOTJIZHJrbFZxYyIsImd0eSI6ImNsaWVudC1jcmVkZW50aWFscyJ9.SwkoiZWQdvi-ioNC20WX8IPVUVtTp-3YBX7xNpWDiDzgwGlzvi8Ji3agRLJnGOdunZW1Y0LohF6_fFMcX5ErYsxuon3QYasb_9tMK0tA7Qclz0_3Uml0OMlX4tBT0b1Y3xZxy4iPDjh6S22d3YBGUhRH9PPD6J9k_FQ_7T2qSvMQ2iviASeB0xGXhHvY_xgefO--lyeGI0o94dvYHHvvSz5kDCSU9KuQ9c7qInkKrDAhr5kn5arX_T3khWanUyk5-NY_rfP-HTbv6rbGFPlLIzNUg1jkIsnX54lr2Raky1Nv60xxADxzj2Y2fZLu7yYCGuNOH4LAwLx_Jv6G-1-MXA'
+                }
+              };
+            }
+          }
         });
         this.getEvents();
         this.setControls();
