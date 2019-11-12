@@ -41,7 +41,7 @@ class LmcMaps {
                     return {
                         url: url,
                         headers: {
-                            'Authorization': 'Bearer ' + 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ik1FVXdOVGd5TkVVeFFUVTBRa1V4T1RnME1qbEdOa1JDUWpFMU16SXhSREZCUkRVeVJrRTBRZyJ9.eyJpc3MiOiJodHRwczovL2Rldi1qaWh5LmF1dGgwLmNvbS8iLCJzdWIiOiJ1dXA5c3A1aDdrbHVSWEVIbWh2VXJlOTJIZHJrbFZxY0BjbGllbnRzIiwiYXVkIjoiaHR0cHM6Ly9kZXYtamloeS5hdXRoMC5jb20vYXBpL3YyLyIsImlhdCI6MTU3Mjk0MDY0NCwiZXhwIjoxNTc1NTMyNjQ0LCJhenAiOiJ1dXA5c3A1aDdrbHVSWEVIbWh2VXJlOTJIZHJrbFZxYyIsImd0eSI6ImNsaWVudC1jcmVkZW50aWFscyJ9.SwkoiZWQdvi-ioNC20WX8IPVUVtTp-3YBX7xNpWDiDzgwGlzvi8Ji3agRLJnGOdunZW1Y0LohF6_fFMcX5ErYsxuon3QYasb_9tMK0tA7Qclz0_3Uml0OMlX4tBT0b1Y3xZxy4iPDjh6S22d3YBGUhRH9PPD6J9k_FQ_7T2qSvMQ2iviASeB0xGXhHvY_xgefO--lyeGI0o94dvYHHvvSz5kDCSU9KuQ9c7qInkKrDAhr5kn5arX_T3khWanUyk5-NY_rfP-HTbv6rbGFPlLIzNUg1jkIsnX54lr2Raky1Nv60xxADxzj2Y2fZLu7yYCGuNOH4LAwLx_Jv6G-1-MXA'
+                            'Authorization': 'Bearer ' + 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaWQiOiJ1c2VyIiwiYXpwIjoidXNlciIsImNydCI6IiIsImF1ZCI6InNpZ25vciIsImV4cCI6MTU3NjEzNTg5MywianRpIjoiNWUzOThmMjEtZWFkNS00YjRiLTlmOTEtYWQ4M2EzZDg0YTk2IiwiaWF0IjoxNTczNTQzODkzLCJpc3MiOiJzaWdub3IiLCJuYmYiOjE1NzM1NDM4OTMsInN1YiI6ImF1dGgtdG9rZW4ifQ.XcG5_vHI1QWJODBhDPhdmwXQlwZ9XhPjToJ0vDaZly2Cx_ttOjEqKM5qJDFn5z9L0YV2_YWPLtD1M7mLaxXDyy3maR0YOSukTDLOtnhuvIavOy3-LgqyFFlkI-YF1S9-EE5xgNshb1hNe5OSq8dAcnIqNu5AmepP_lM_UkTf3jp2Vgkq88Qf0tPwjtXPkQwZzAx5GgBtV4Ij_5j5vB3-BP_bYOgTXdDT37bMc_yAdkesk049eO1K4mSjTKFGlLgKLiVt9luud_LPIOk0Mx_BM_cf-ly5LExRkVox2ZPII1sLypFvNpnEXT8aUrPpixtpNB51m9FswHhkj6aeI3cpJw'
                         }
                     }
                 }
