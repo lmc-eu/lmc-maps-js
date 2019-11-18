@@ -48,7 +48,7 @@ var LmcMaps = (function (mapboxgl) {
   var LmcMaps =
   /*#__PURE__*/
   function () {
-    function LmcMaps(container, options) {
+    function LmcMaps(options) {
       _classCallCheck(this, LmcMaps);
 
       _defineProperty(this, "container", void 0);
@@ -65,18 +65,23 @@ var LmcMaps = (function (mapboxgl) {
 
       _defineProperty(this, "marker", void 0);
 
-      this.container = container;
+      _defineProperty(this, "authToken", void 0);
+
+      this.container = options.container;
       this.coords = options.coords || [14.4563172, 50.1028914];
       this.zoom = options.zoom || 12;
       this.style = "".concat(STYLES_URL).concat(STYLES.indexOf(options.style) !== -1 ? options.style : STYLES[0], "/style.json");
       this.lang = options.lang || null;
       this.marker = options.marker;
+      this.authToken = options.authToken;
       this.init();
     }
 
     _createClass(LmcMaps, [{
       key: "init",
       value: function init() {
+        var _this = this;
+
         this.map = new mapboxgl.Map({
           container: this.container,
           style: this.style,
@@ -85,11 +90,11 @@ var LmcMaps = (function (mapboxgl) {
           renderWorldCopies: false,
           pitchWithRotate: false,
           transformRequest: function transformRequest(url, resourceType) {
-            if (url.startsWith("https://tileserver.lmc.cz") && resourceType === 'Tile') {
+            if (_this.authToken && url.startsWith("https://tileserver.lmc.cz") && resourceType === 'Tile') {
               return {
                 url: url,
                 headers: {
-                  'Authorization': 'Bearer ' + 'eyJhbGciOiJSUzI1NiIsImtpZCI6IkR4QzBhZEVub0VvemFUUnJHakZwTWFfUkdwWSIsInR5cCI6IkpXVCJ9.eyJzaWQiOiJ1c2VyIiwiYXpwIjoidXNlciIsImNydCI6IiIsImF1ZCI6InNpZ25vciIsImV4cCI6MTU3NjMyOTI3NywianRpIjoiMGU1NGY3NzYtYjQwMS00ZWI0LTkyMWItMmMxMWNkMDdmN2M5IiwiaWF0IjoxNTczNzM3Mjc3LCJpc3MiOiJzaWdub3IiLCJuYmYiOjE1NzM3MzcyNzcsInN1YiI6ImF1dGgtdG9rZW4ifQ.tiXx8UA9GoY2rqO9_OJT8If2QHbijrPpC-Bt-EEoXV7h7KfpP7mj6EVDVTENsfRmhcRFT6zakT9G-O9A7ntSKBx367C9BdCVY_WVB8VPU1lW3c3_N4LirlIjCY3zWP2v0tTXB01JpDrbAwyc6OhtNDAZADzodqoJs_2-CHSM01pjWQ08xFM8x6OgZOV5DQ7m7k4-b49bDftZJ15jomHenY-RNCEY-eX2np6jaS2gUphicixaF6rMpyV6hssyrsjt6TXy4-f4P2RgHz4AcdVrEf2uct8abS_1lfFHqIvuLU3YYkJQV0VAs7MUoetFQe1QIBP-m4HX8ffuLdELSZsqpA'
+                  'Authorization': 'Bearer ' + _this.authToken
                 }
               };
             }
@@ -102,16 +107,16 @@ var LmcMaps = (function (mapboxgl) {
     }, {
       key: "getEvents",
       value: function getEvents() {
-        var _this = this;
+        var _this2 = this;
 
         this.map.on('load', function () {
-          LANGUAGES.indexOf(_this.lang) !== -1 && _this.setLanguage(_this.lang);
+          LANGUAGES.indexOf(_this2.lang) !== -1 && _this2.setLanguage(_this2.lang);
         });
       }
     }, {
       key: "setLanguage",
       value: function setLanguage(lang) {
-        var _this2 = this;
+        var _this3 = this;
 
         var style = JSON.parse(JSON.stringify(this.map.getStyle()));
         var nameFallbackLayers = [];
@@ -119,7 +124,7 @@ var LmcMaps = (function (mapboxgl) {
           if (layer.id.indexOf('label') !== -1 && layer.layout['text-field']) {
             nameFallbackLayers.push([index, JSON.parse(JSON.stringify(layer))]);
 
-            _this2.addLayerFilter(layer, ['has', "name:".concat(lang)]);
+            _this3.addLayerFilter(layer, ['has', "name:".concat(lang)]);
 
             layer.layout['text-field'] = "{name:".concat(lang, "}");
           }
@@ -127,7 +132,7 @@ var LmcMaps = (function (mapboxgl) {
         nameFallbackLayers.forEach(function (layer, index) {
           layer[1].id = layer[1].id + '-langFallback';
 
-          _this2.addLayerFilter(layer[1], ['!has', "name:".concat(lang)]);
+          _this3.addLayerFilter(layer[1], ['!has', "name:".concat(lang)]);
 
           style.layers.splice(layer[0] + index + 1, 0, layer[1]);
         });
