@@ -1,30 +1,40 @@
 import mapboxgl from 'mapbox-gl';
 
-import * as con from './constants';
-
 import './lmc-maps.scss';
+
+import { MapsOptions, Languages, MapStyle } from './types';
+import { STYLES } from './constants';
+
+declare const TILESERVER_URL: string;
 
 class LmcMaps {
 
-    container;
-    map;
-    coords;
-    zoom;
-    style;
-    lang;
-    marker;
-    authToken;
+    container: string;
 
-    constructor(options) {
+    map: mapboxgl.Map;
+
+    coords: mapboxgl.LngLatLike;
+
+    zoom: number;
+
+    style: MapStyle;
+
+    lang: Languages;
+
+    hasMarker: boolean;
+
+    authToken: string;
+
+    constructor(options: MapsOptions) {
         this.container = options.container;
         this.coords = options.coords || [14.4563172, 50.1028914];
         this.zoom = options.zoom || 12;
 
-        this.style = `${con.STYLES_URL}${
-            con.STYLES.indexOf(options.style) !== -1 ? options.style : con.STYLES[0]
-        }/style.json`;
-        this.lang = options.lang || null;
-        this.marker = options.marker;
+        this.style = (options.style || STYLES.DEFAULT) as MapStyle;
+
+        this.lang = options.lang as Languages || null;
+
+        this.hasMarker = options.hasMarker;
 
         this.authToken = options.authToken;
 
@@ -34,7 +44,7 @@ class LmcMaps {
     init() {
         this.map = new mapboxgl.Map({
             container: this.container,
-            style: this.style,
+            style: `${STYLES.URL}${this.style}/style.json`,
             center: this.coords,
             zoom: this.zoom,
             renderWorldCopies: false,
@@ -54,21 +64,22 @@ class LmcMaps {
         this.getEvents();
 
         this.setControls();
-        this.marker && this.renderMarker(this.coords);
+
+        this.hasMarker && this.renderMarker(this.coords);
     }
 
     getEvents() {
         this.map.on('load', () => {
-            con.LANGUAGES.indexOf(this.lang) !== -1 && this.setLanguage(this.lang);
+            this.lang && this.setLanguage(this.lang);
         });
     }
 
-    setLanguage(lang) {
-        const style = JSON.parse(JSON.stringify(this.map.getStyle()));
+    setLanguage(lang: string) {
+        const style = JSON.parse(JSON.stringify(this.map.getStyle())); // {...this.map.getStyle()} ???
 
-        const nameFallbackLayers = [];
+        const nameFallbackLayers: any[] = [];
 
-        style.layers.forEach((layer, index) => {
+        style.layers.forEach((layer: any, index: number) => {
             if (layer.id.indexOf('label') !== -1 && layer.layout['text-field']) {
                 nameFallbackLayers.push([index, JSON.parse(JSON.stringify(layer))]);
                 this.addLayerFilter(layer, ['has', `name:${lang}`]);
@@ -76,7 +87,7 @@ class LmcMaps {
             }
         });
 
-        nameFallbackLayers.forEach((layer, index) => {
+        nameFallbackLayers.forEach((layer: any, index: number) => {
             layer[1].id = layer[1].id + '-langFallback';
             this.addLayerFilter(layer[1], ['!has', `name:${lang}`]);
             style.layers.splice(layer[0] + index + 1, 0, layer[1]);
@@ -97,7 +108,7 @@ class LmcMaps {
         }));
     }
 
-    renderMarker(coords) {
+    renderMarker(coords: mapboxgl.LngLatLike) {
         new mapboxgl.Marker({
             element: this.setMarkerStyle(),
             anchor: 'bottom',
@@ -106,14 +117,14 @@ class LmcMaps {
           .addTo(this.map);
     }
 
-    setMarkerStyle() {
+    setMarkerStyle(): HTMLDivElement {
         const el = document.createElement('div');
         el.className = 'lmc-maps__marker';
 
         return el;
     }
 
-    addLayerFilter(layer, filter) {
+    addLayerFilter(layer: any, filter: string[]) {
         if (!layer.filter) {
             layer.filter = filter;
         } else if (layer.filter[0] === 'all') {

@@ -6,19 +6,19 @@ module.exports = () => {
     return {
         mode: 'development',
         entry: {
-            index: './src/page/index.js'
+            index: './src/page/index.ts'
         },
         devtool: 'inline-source-map',
         resolve: {
-            extensions: ['.js', '.jsx']
+            extensions: ['.ts', '.js']
         },
         module: {
             rules: [
                 {
-                    test: /\.js$/,
+                    test: /\.tsx?$/,
                     exclude: /(node_modules)/,
                     use: {
-                        loader: 'babel-loader'
+                        loader: 'awesome-typescript-loader'
                     }
                 },{
                     test: /\.(css|s[ac]ss)$/,
@@ -35,7 +35,7 @@ module.exports = () => {
                             loader: 'file-loader'
                         }
                     ]
-                }  
+                }
             ]
         },
         plugins: [
@@ -44,7 +44,6 @@ module.exports = () => {
                 template: 'assets/index.html'
             }),
             new webpack.DefinePlugin({
-                'ENV_DEV': JSON.stringify('dev'),
                 'TILESERVER_URL': JSON.stringify('http://localhost:8080')
             })
         ],
