@@ -5,6 +5,9 @@ import './lmc-maps.scss';
 import { MapsOptions, Languages, MapStyle } from './types';
 import { STYLES } from './constants';
 
+import { setLanguage } from './utils/languages';
+import { createMarker } from './utils/markers';
+
 declare const TILESERVER_URL: string;
 
 class LmcMaps {
@@ -65,36 +68,14 @@ class LmcMaps {
 
         this.setControls();
 
-        this.hasMarker && this.renderMarker(this.coords);
+        this.hasMarker && createMarker(this.coords).addTo(this.map);
     }
 
     getEvents() {
         this.map.on('load', () => {
-            this.lang && this.setLanguage(this.lang);
-        });
-    }
-
-    setLanguage(lang: string) {
-        const style = JSON.parse(JSON.stringify(this.map.getStyle())); // {...this.map.getStyle()} ???
-
-        const nameFallbackLayers: any[] = [];
-
-        style.layers.forEach((layer: any, index: number) => {
-            if (layer.id.indexOf('label') !== -1 && layer.layout['text-field']) {
-                nameFallbackLayers.push([index, JSON.parse(JSON.stringify(layer))]);
-                this.addLayerFilter(layer, ['has', `name:${lang}`]);
-                layer.layout['text-field'] = `{name:${lang}}`;
-            }
-        });
-
-        nameFallbackLayers.forEach((layer: any, index: number) => {
-            layer[1].id = layer[1].id + '-langFallback';
-            this.addLayerFilter(layer[1], ['!has', `name:${lang}`]);
-            style.layers.splice(layer[0] + index + 1, 0, layer[1]);
-        });
-
-        this.map.setStyle(style, {
-            diff: true
+            this.lang && this.map.setStyle(setLanguage(this.map.getStyle(), this.lang), {
+                diff: true
+            });
         });
     }
 
@@ -106,36 +87,6 @@ class LmcMaps {
         this.map.addControl(new mapboxgl.ScaleControl({
             maxWidth: 80
         }));
-    }
-
-    renderMarker(coords: mapboxgl.LngLatLike) {
-        new mapboxgl.Marker({
-            element: this.setMarkerStyle(),
-            anchor: 'bottom',
-            offset: [0, 12] // translate cause shadow in image
-        }).setLngLat(coords)
-          .addTo(this.map);
-    }
-
-    setMarkerStyle(): HTMLDivElement {
-        const el = document.createElement('div');
-        el.className = 'lmc-maps__marker';
-
-        return el;
-    }
-
-    addLayerFilter(layer: any, filter: string[]) {
-        if (!layer.filter) {
-            layer.filter = filter;
-        } else if (layer.filter[0] === 'all') {
-            layer.filter.push(filter);
-        } else {
-            layer.filter = [
-                'all',
-                layer.filter,
-                filter
-            ];
-        }
     }
 }
 
