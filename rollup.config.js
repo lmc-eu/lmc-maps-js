@@ -1,11 +1,11 @@
-import babel from 'rollup-plugin-babel';
+import typescript from 'rollup-plugin-typescript';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import postcss from 'rollup-plugin-postcss';
 import replace from 'rollup-plugin-replace';
 
 export default {
-    input: 'src/lib/lmc-maps.js',
+    input: 'src/lib/lmc-maps.ts',
     output: [
         {
             file: 'dist/lmc-maps.es.js',
@@ -26,11 +26,11 @@ export default {
         'mapbox-gl'
     ],
     plugins: [
-        babel(),
+        typescript(),
         replace({
             TILESERVER_URL: JSON.stringify('https://tileserver.lmc.cz')
         }),
-        commonjs(),
+        commonjs({extensions: ['.js', '.ts']}),
         resolve(),
         postcss({
             extract: 'dist/lmc-maps.css',

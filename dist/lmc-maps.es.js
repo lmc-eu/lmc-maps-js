@@ -1,183 +1,137 @@
 import mapboxgl from 'mapbox-gl';
 
-function _classCallCheck(instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-}
+var STYLES = {
+    URL: "https://tileserver.lmc.cz" + "/styles/",
+    DEFAULT: 'lmc-default'
+};
 
-function _defineProperties(target, props) {
-  for (var i = 0; i < props.length; i++) {
-    var descriptor = props[i];
-    descriptor.enumerable = descriptor.enumerable || false;
-    descriptor.configurable = true;
-    if ("value" in descriptor) descriptor.writable = true;
-    Object.defineProperty(target, descriptor.key, descriptor);
-  }
-}
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at http://www.apache.org/licenses/LICENSE-2.0
 
-function _createClass(Constructor, protoProps, staticProps) {
-  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-  if (staticProps) _defineProperties(Constructor, staticProps);
-  return Constructor;
-}
+THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
+WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
+MERCHANTABLITY OR NON-INFRINGEMENT.
 
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
+See the Apache Version 2.0 License for specific language governing permissions
+and limitations under the License.
+***************************************************************************** */
 
-  return obj;
-}
-
-// STYLES
-var STYLES_URL = "https://tileserver.lmc.cz" + '/styles/';
-var STYLES = ['lmc-default', 'klokantech-basic'];
-var LANGUAGES = ['cs', 'de', 'en', 'fi', 'pl', 'sk'];
-
-var LmcMaps =
-/*#__PURE__*/
-function () {
-  function LmcMaps(options) {
-    _classCallCheck(this, LmcMaps);
-
-    _defineProperty(this, "container", void 0);
-
-    _defineProperty(this, "map", void 0);
-
-    _defineProperty(this, "coords", void 0);
-
-    _defineProperty(this, "zoom", void 0);
-
-    _defineProperty(this, "style", void 0);
-
-    _defineProperty(this, "lang", void 0);
-
-    _defineProperty(this, "marker", void 0);
-
-    _defineProperty(this, "authToken", void 0);
-
-    this.container = options.container;
-    this.coords = options.coords || [14.4563172, 50.1028914];
-    this.zoom = options.zoom || 12;
-    this.style = "".concat(STYLES_URL).concat(STYLES.indexOf(options.style) !== -1 ? options.style : STYLES[0], "/style.json");
-    this.lang = options.lang || null;
-    this.marker = options.marker;
-    this.authToken = options.authToken;
-    this.init();
-  }
-
-  _createClass(LmcMaps, [{
-    key: "init",
-    value: function init() {
-      var _this = this;
-
-      this.map = new mapboxgl.Map({
-        container: this.container,
-        style: this.style,
-        center: this.coords,
-        zoom: this.zoom,
-        renderWorldCopies: false,
-        pitchWithRotate: false,
-        transformRequest: function transformRequest(url, resourceType) {
-          if (_this.authToken && url.startsWith("https://tileserver.lmc.cz") && resourceType === 'Tile') {
-            return {
-              url: url,
-              headers: {
-                'Authorization': 'Bearer ' + _this.authToken
-              }
-            };
-          }
+var __assign = function() {
+    __assign = Object.assign || function __assign(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
         }
-      });
-      this.getEvents();
-      this.setControls();
-      this.marker && this.renderMarker(this.coords);
-    }
-  }, {
-    key: "getEvents",
-    value: function getEvents() {
-      var _this2 = this;
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 
-      this.map.on('load', function () {
-        LANGUAGES.indexOf(_this2.lang) !== -1 && _this2.setLanguage(_this2.lang);
-      });
-    }
-  }, {
-    key: "setLanguage",
-    value: function setLanguage(lang) {
-      var _this3 = this;
-
-      var style = JSON.parse(JSON.stringify(this.map.getStyle()));
-      var nameFallbackLayers = [];
-      style.layers.forEach(function (layer, index) {
+var setLanguage = function (style, lang) {
+    var newStyle = __assign({}, style), labelFallbackLayers = [];
+    newStyle.layers.forEach(function (layer, index) {
         if (layer.id.indexOf('label') !== -1 && layer.layout['text-field']) {
-          nameFallbackLayers.push([index, JSON.parse(JSON.stringify(layer))]);
-
-          _this3.addLayerFilter(layer, ['has', "name:".concat(lang)]);
-
-          layer.layout['text-field'] = "{name:".concat(lang, "}");
+            labelFallbackLayers.push({
+                placement: index,
+                data: JSON.parse(JSON.stringify(layer))
+            });
+            addLayerFilter(layer, ['has', "name:" + lang]);
+            layer.layout['text-field'] = "{name:" + lang + "}";
         }
-      });
-      nameFallbackLayers.forEach(function (layer, index) {
-        layer[1].id = layer[1].id + '-langFallback';
-
-        _this3.addLayerFilter(layer[1], ['!has', "name:".concat(lang)]);
-
-        style.layers.splice(layer[0] + index + 1, 0, layer[1]);
-      });
-      this.map.setStyle(style, {
-        diff: true
-      });
+    });
+    labelFallbackLayers.forEach(function (layer, index) {
+        layer.data.id = layer.data.id + '-langFallback';
+        addLayerFilter(layer.data, ['!has', "name:" + lang]);
+        newStyle.layers.splice(layer.placement + index + 1, 0, layer.data);
+    });
+    return newStyle;
+};
+var addLayerFilter = function (layer, filter) {
+    if (!layer.filter) {
+        layer.filter = filter;
     }
-  }, {
-    key: "setControls",
-    value: function setControls() {
-      this.map.addControl(new mapboxgl.NavigationControl({
-        showCompass: false
-      }));
-      this.map.addControl(new mapboxgl.ScaleControl({
-        maxWidth: 80
-      }));
+    else if (layer.filter[0] === 'all') {
+        layer.filter.push(filter);
     }
-  }, {
-    key: "renderMarker",
-    value: function renderMarker(coords) {
-      new mapboxgl.Marker({
-        element: this.setMarkerStyle(),
+    else {
+        layer.filter = [
+            'all',
+            layer.filter,
+            filter
+        ];
+    }
+};
+
+var createMarker = function (coords) {
+    var marker = new mapboxgl.Marker({
+        element: setMarkerStyle(),
         anchor: 'bottom',
         offset: [0, 12] // translate cause shadow in image
+    }).setLngLat(coords);
+    return marker;
+};
+var setMarkerStyle = function () {
+    var el = document.createElement('div');
+    el.className = 'lmc-maps__marker';
+    return el;
+};
 
-      }).setLngLat(coords).addTo(this.map);
+var LmcMaps = /** @class */ (function () {
+    function LmcMaps(options) {
+        this.container = options.container;
+        this.coords = options.coords || [14.4563172, 50.1028914];
+        this.zoom = options.zoom || 12;
+        this.style = (options.style || STYLES.DEFAULT);
+        this.lang = options.lang || null;
+        this.hasMarker = options.hasMarker;
+        this.authToken = options.authToken;
+        this.init();
     }
-  }, {
-    key: "setMarkerStyle",
-    value: function setMarkerStyle() {
-      var el = document.createElement('div');
-      el.className = 'lmc-maps__marker';
-      return el;
-    }
-  }, {
-    key: "addLayerFilter",
-    value: function addLayerFilter(layer, filter) {
-      if (!layer.filter) {
-        layer.filter = filter;
-      } else if (layer.filter[0] === 'all') {
-        layer.filter.push(filter);
-      } else {
-        layer.filter = ['all', layer.filter, filter];
-      }
-    }
-  }]);
-
-  return LmcMaps;
-}();
+    LmcMaps.prototype.init = function () {
+        var _this = this;
+        this.map = new mapboxgl.Map({
+            container: this.container,
+            style: "" + STYLES.URL + this.style + "/style.json",
+            center: this.coords,
+            zoom: this.zoom,
+            renderWorldCopies: false,
+            pitchWithRotate: false,
+            transformRequest: function (url, resourceType) {
+                if (_this.authToken && url.startsWith("https://tileserver.lmc.cz") && resourceType === 'Tile') {
+                    return {
+                        url: url,
+                        headers: {
+                            'Authorization': 'Bearer ' + _this.authToken
+                        }
+                    };
+                }
+            }
+        });
+        this.getEvents();
+        this.setControls();
+        this.hasMarker && createMarker(this.coords).addTo(this.map);
+    };
+    LmcMaps.prototype.getEvents = function () {
+        var _this = this;
+        this.map.on('load', function () {
+            _this.lang && _this.map.setStyle(setLanguage(_this.map.getStyle(), _this.lang), {
+                diff: true
+            });
+        });
+    };
+    LmcMaps.prototype.setControls = function () {
+        this.map.addControl(new mapboxgl.NavigationControl({
+            showCompass: false
+        }));
+        this.map.addControl(new mapboxgl.ScaleControl({
+            maxWidth: 80
+        }));
+    };
+    return LmcMaps;
+}());
 
 export default LmcMaps;
