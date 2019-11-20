@@ -5,7 +5,7 @@ export type MapsOptions = {
     style?: string;
     lang?: string;
     hasMarker?: boolean;
-    authToken?: string;
+    authToken: string;
 };
 
 export type Styles = {
