@@ -89,7 +89,7 @@ var LmcMaps = (function (mapboxgl) {
             this.coords = options.coords || [14.4563172, 50.1028914];
             this.zoom = options.zoom || 12;
             this.style = (options.style || STYLES.DEFAULT);
-            this.lang = options.lang || null;
+            this.lang = options.lang;
             this.hasMarker = options.hasMarker;
             this.authToken = options.authToken;
             this.init();

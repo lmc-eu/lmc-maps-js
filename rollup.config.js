@@ -3,15 +3,16 @@ import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import postcss from 'rollup-plugin-postcss';
 import replace from 'rollup-plugin-replace';
+import copy from 'rollup-plugin-copy'
 
 export default {
     input: 'src/lib/lmc-maps.ts',
     output: [
         {
-            file: 'dist/lmc-maps.es.js',
+            file: 'dist/lmc-maps.js',
             format: 'es'
         },{
-            file: 'dist/lmc-maps.js',
+            file: 'dist/lmc-maps.cjs.js',
             format: 'cjs'
         },{
             file: 'dist/lmc-maps.iife.js',
@@ -36,6 +37,12 @@ export default {
             extract: 'dist/lmc-maps.css',
             extensions: ['.css', '.sass', '.scss'],
             plugins: []
+        }),
+        copy({
+            targets: [{
+                src: 'src/lib/index.d.ts',
+                dest: 'dist'
+            }]
         })
     ]
 };

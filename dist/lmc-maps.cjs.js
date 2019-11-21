@@ -1,4 +1,8 @@
-import mapboxgl from 'mapbox-gl';
+'use strict';
+
+function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+
+var mapboxgl = _interopDefault(require('mapbox-gl'));
 
 var STYLES = {
     URL: "https://tileserver.lmc.cz" + "/styles/",
@@ -86,7 +90,7 @@ var LmcMaps = /** @class */ (function () {
         this.coords = options.coords || [14.4563172, 50.1028914];
         this.zoom = options.zoom || 12;
         this.style = (options.style || STYLES.DEFAULT);
-        this.lang = options.lang || null;
+        this.lang = options.lang;
         this.hasMarker = options.hasMarker;
         this.authToken = options.authToken;
         this.init();
@@ -134,4 +138,4 @@ var LmcMaps = /** @class */ (function () {
     return LmcMaps;
 }());
 
-export default LmcMaps;
+module.exports = LmcMaps;
