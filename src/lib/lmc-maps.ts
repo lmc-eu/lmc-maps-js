@@ -30,12 +30,14 @@ class LmcMaps {
 
     constructor(options: MapsOptions) {
         this.container = options.container;
+
         this.coords = options.coords || [14.4563172, 50.1028914];
+
         this.zoom = options.zoom || 12;
 
-        this.style = (options.style || STYLES.DEFAULT) as MapStyle;
+        this.style = (options.style || STYLES.DEFAULT);
 
-        this.lang = options.lang as Languages || null;
+        this.lang = options.lang;
 
         this.hasMarker = options.hasMarker;
 

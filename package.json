@@ -5,6 +5,7 @@
   "main": "dist/lmc-maps.js",
   "module": "dist/lmc-maps.es.js",
   "browser": "dist/lmc-maps.iife.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "start": "webpack-dev-server --config webpack.config.js",
     "build": "rimraf dist/* && rollup -c"
