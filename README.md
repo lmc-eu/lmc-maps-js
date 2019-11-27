@@ -62,21 +62,13 @@ import LmcMaps from '@lmc-eu/lmc-maps';
 | hasMarker   | Show marker in center of map (optional) | boolean
 | style       | Style id (default: lmc-default) ([see supported styles](https://maps.lmc.cz/#styles))  | string
 | lang        | Language of labels in map ([see supported languages](#supported-languages)) (default: native) | string
-| authToken   | Your Authorization token ([demo account token](#auth-token)) (required) | string
+| authToken   | Your Authorization token (required) | string
 
 #### Supported languages <a name="supported-languages"></a>
 
 Currently are supported these languages:
 
 bg (Bulgarian), bs (Bosnian), cs (Czech), da (Danish), de (German), el (Greek), en (English), es (Spanish), et (Estonian), fi (Finnish), fr (French), hr (Croatian), hu (Hungarian), is (Icelandic), it (Italian), lt (Lithuanian), lv (Latvian), mk (Macedonian), nl (Dutch), pl (Polish), pt (Portuguese), ro (Romania), ru (Russian), sk (Slovak), sl (Slovene), sq (Albanian), sr (Serbian), sv (Swedish), tr (Turkish), uk (Ukrainian)
-
-#### Authorization token <a name="auth-token"></a>
-
-For testing purposes you can use demo account token
-
-```bash
-eyJhbGciOiJSUzI1NiIsImtpZCI6ImptSThuUHFTR3JTNGFVLWdqajVTamp3R1ZoRSIsInR5cCI6IkpXVCJ9.eyJzaWQiOiJnaXMtdGlsZXNlcnZlciIsImF6cCI6Imdpcy1kZW1vLWFjY291bnQiLCJhdWQiOiJnaXMtdGlsZXNlcnZlciIsImV4cCI6MTU4OTk3ODA5NiwianRpIjoiZTVhMWRiZmEtMGM4NC00NzM0LWI5ZDItNTQzMjYzZGFkMmExIiwiaWF0IjoxNTc0NDI2MDk2LCJpc3MiOiJzaWdub3IiLCJuYmYiOjE1NzQ0MjYwOTYsInN1YiI6ImFjdGlvbi1yZXF1ZXN0LXRva2VuIn0.VNosmSfKsZlLi1aY7wj6mrOL16a7c_aQX_GtAVp7nI0UTKSUOsUPFkuXNk079l06RlYcN7_q0lh5sWcWCeEV4MH4n_QcFaWeqhm0BjUpM-TQslUp3r6tWS3crt_HaU9teoXhNaHfOLj6OplUOTXmnEw13tbH_kUwm66NOYRJG9S6jdJVDKC-M4zE5u-AuNNU-rXAdttjY2ctdNQ9SUYQjGyJUKewGVcw1D6H_cxF7S3FSjkRh_NzNdgztKKNSfmh_qRgDe-ti_nSOndlSL2cXF0oG0fC2tUS5KV6Sg3ury0lJr71ZCtb3WB874ueR6TGBsYTuEw3jnXvwIElmhAyLA
-```
 
 ### Other usage
 
