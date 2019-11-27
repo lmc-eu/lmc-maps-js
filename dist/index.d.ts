@@ -1,6 +1,6 @@
 /// <reference types="mapbox-gl" />
 
-declare module 'lmc-maps' {
+declare module '@lmc-eu/lmc-maps' {
 
     declare class LmcMaps {
 
