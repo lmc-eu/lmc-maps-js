@@ -6,10 +6,10 @@ export type MapsOptions = {
     lang?: Languages;
     hasMarker?: boolean;
     authToken: string;
+    publicUrl?: string;
 };
 
 export type Styles = {
-    URL: string;
     DEFAULT: MapStyle;
 };
 

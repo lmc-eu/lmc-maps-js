@@ -28,6 +28,8 @@ class LmcMaps {
 
     authToken: string;
 
+    publicUrl: string;
+
     constructor(options: MapsOptions) {
         this.container = options.container;
 
@@ -35,7 +37,7 @@ class LmcMaps {
 
         this.zoom = options.zoom || 12;
 
-        this.style = (options.style || STYLES.DEFAULT);
+        this.style = options.style || STYLES.DEFAULT;
 
         this.lang = options.lang;
 
@@ -43,19 +45,21 @@ class LmcMaps {
 
         this.authToken = options.authToken;
 
+        this.publicUrl = options.publicUrl || TILESERVER_URL;
+
         this.init();
     }
 
     init() {
         this.map = new mapboxgl.Map({
             container: this.container,
-            style: `${STYLES.URL}${this.style}/style.json`,
+            style: `${this.publicUrl}/styles/${this.style}/style.json`,
             center: this.coords,
             zoom: this.zoom,
             renderWorldCopies: false,
             pitchWithRotate: false,
             transformRequest: (url, resourceType) => {
-                if (this.authToken && url.startsWith(TILESERVER_URL) && resourceType === 'Tile') {
+                if (this.authToken && url.startsWith(this.publicUrl) && resourceType === 'Tile') {
                     return {
                         url: url,
                         headers: {

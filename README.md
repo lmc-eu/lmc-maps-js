@@ -47,7 +47,8 @@ import LmcMaps from '@lmc-eu/lmc-maps';
         style: 'lmc-default',
         marker: true,
         lang: 'cs',
-        authToken: 'YOUR_TOKEN'
+        authToken: 'YOUR_TOKEN',
+        publicUrl: 'https://tileserver.lmc.cz'
     });
 })();
 ```
@@ -63,6 +64,7 @@ import LmcMaps from '@lmc-eu/lmc-maps';
 | style       | Style id (default: lmc-default) ([see supported styles](https://maps.lmc.cz/#styles))  | string
 | lang        | Language of labels in map ([see supported languages](#supported-languages)) (default: native) | string
 | authToken   | Your Authorization token (required) | string
+| publicUrl   | Url to your tileserver (default: https://tileserver.lmc.cz) | string
 
 #### Supported languages <a name="supported-languages"></a>
 

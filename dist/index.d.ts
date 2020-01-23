@@ -22,6 +22,8 @@ declare module '@lmc-eu/lmc-maps' {
 
         authToken: string;
 
+        publicUrl: string;
+
         init(): void;
 
         getEvents(): void;
@@ -53,5 +55,7 @@ declare type MapsOptions = {
     hasMarker?: boolean;
 
     authToken: string;
+
+    publicUrl?: string;
 
 };
