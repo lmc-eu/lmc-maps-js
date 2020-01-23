@@ -4,7 +4,6 @@ var LmcMaps = (function (mapboxgl) {
     mapboxgl = mapboxgl && mapboxgl.hasOwnProperty('default') ? mapboxgl['default'] : mapboxgl;
 
     var STYLES = {
-        URL: "https://tileserver.lmc.cz" + "/styles/",
         DEFAULT: 'lmc-default'
     };
 
@@ -88,23 +87,24 @@ var LmcMaps = (function (mapboxgl) {
             this.container = options.container;
             this.coords = options.coords || [14.4563172, 50.1028914];
             this.zoom = options.zoom || 12;
-            this.style = (options.style || STYLES.DEFAULT);
+            this.style = options.style || STYLES.DEFAULT;
             this.lang = options.lang;
             this.hasMarker = options.hasMarker;
             this.authToken = options.authToken;
+            this.publicUrl = options.publicUrl || "https://tileserver.lmc.cz";
             this.init();
         }
         LmcMaps.prototype.init = function () {
             var _this = this;
             this.map = new mapboxgl.Map({
                 container: this.container,
-                style: "" + STYLES.URL + this.style + "/style.json",
+                style: this.publicUrl + "/styles/" + this.style + "/style.json",
                 center: this.coords,
                 zoom: this.zoom,
                 renderWorldCopies: false,
                 pitchWithRotate: false,
                 transformRequest: function (url, resourceType) {
-                    if (_this.authToken && url.startsWith("https://tileserver.lmc.cz") && resourceType === 'Tile') {
+                    if (_this.authToken && url.startsWith(_this.publicUrl) && resourceType === 'Tile') {
                         return {
                             url: url,
                             headers: {
