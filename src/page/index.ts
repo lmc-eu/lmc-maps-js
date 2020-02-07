@@ -8,11 +8,11 @@ import { Languages } from '../lib/types';
 
     const urlParams: URLSearchParams = new URL(window.location.href).searchParams;
 
-    const coords: [number, number] = urlParams.get('lng') && urlParams.get('lat')
-        ? [
+    const coords: [[number, number]] = urlParams.get('lng') && urlParams.get('lat')
+        ? [[
             parseFloat(urlParams.get('lng')),
             parseFloat(urlParams.get('lat'))
-          ]
+        ]]
         : null;
     const lang: Languages = urlParams.get('lang') as Languages;
     const zoom: number = parseInt(urlParams.get('zoom'));

@@ -10,7 +10,9 @@ declare module '@lmc-eu/lmc-maps' {
 
         map: mapboxgl.Map;
 
-        coords: mapboxgl.LngLatLike;
+        coords: Array<mapboxgl.LngLatLike>;
+
+        center: mapboxgl.LngLatLike;
 
         zoom: number;
 
@@ -44,7 +46,9 @@ declare type MapsOptions = {
 
     container: string;
 
-    coords?: mapboxgl.LngLatLike;
+    coords?: Array<mapboxgl.LngLatLike>;
+
+    center: mapboxgl.LngLatLike;
 
     zoom?: number;
 

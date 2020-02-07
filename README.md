@@ -42,7 +42,8 @@ import LmcMaps from '@lmc-eu/lmc-maps';
 (() => {
     new LmcMaps({
         container: 'lmcMapId',
-        coords: [15.524, 49.766],
+        coords: [[15.524, 49.766]],
+        center: [15.524, 49.766]
         zoom: 7,
         style: 'lmc-default',
         marker: true,
@@ -58,7 +59,8 @@ import LmcMaps from '@lmc-eu/lmc-maps';
 | Property    | Description | Type     |
 | :---        | :---        | :---     |
 | container   | Id of HTML container for map | string
-| coords      | LngLat Array for center of map (default [14.4563172, 50.1028914]) | array
+| coords      | Array of LngLat Array for one or multiple points on map (default [[14.4563172, 50.1028914]]) | array
+| center      | LngLat Array for center of map (default [14.4563172, 50.1028914]) | array
 | zoom        | Initial zoom level of map (default: 12) | number
 | hasMarker   | Show marker in center of map (optional) | boolean
 | style       | Style id (default: lmc-default) ([see supported styles](https://maps.lmc.cz/#styles))  | string

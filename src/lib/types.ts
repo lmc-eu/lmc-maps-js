@@ -1,6 +1,7 @@
 export type MapsOptions = {
     container: string;
-    coords?: mapboxgl.LngLatLike;
+    coords?: Array<mapboxgl.LngLatLike>;
+    center?: mapboxgl.LngLatLike;
     zoom?: number;
     style?: MapStyle;
     lang?: Languages;

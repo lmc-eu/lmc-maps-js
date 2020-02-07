@@ -16,7 +16,11 @@ class LmcMaps {
 
     map: mapboxgl.Map;
 
-    coords: mapboxgl.LngLatLike;
+    bounds: mapboxgl.LngLatBounds;
+
+    coords: Array<mapboxgl.LngLatLike>;
+
+    center: mapboxgl.LngLatLike;
 
     zoom: number;
 
@@ -33,9 +37,11 @@ class LmcMaps {
     constructor(options: MapsOptions) {
         this.container = options.container;
 
-        this.coords = options.coords || [14.4563172, 50.1028914];
+        this.coords = options.coords;
 
-        this.zoom = options.zoom || 12;
+        this.center = options.center;
+
+        this.zoom = options.zoom ;
 
         this.style = options.style || STYLES.DEFAULT;
 
@@ -54,8 +60,8 @@ class LmcMaps {
         this.map = new mapboxgl.Map({
             container: this.container,
             style: `${this.publicUrl}/styles/${this.style}/style.json`,
-            center: this.coords,
-            zoom: this.zoom,
+            center: this.center || [14.4563172, 50.1028914],
+            zoom: this.zoom || 12,
             renderWorldCopies: false,
             pitchWithRotate: false,
             transformRequest: (url, resourceType) => {
@@ -74,7 +80,7 @@ class LmcMaps {
 
         this.setControls();
 
-        this.hasMarker && createMarker(this.coords).addTo(this.map);
+        this.coords && this.computeMapPoints();
     }
 
     getEvents() {
@@ -93,6 +99,25 @@ class LmcMaps {
         this.map.addControl(new mapboxgl.ScaleControl({
             maxWidth: 80
         }));
+    }
+
+    computeMapPoints() {
+        this.bounds = new mapboxgl.LngLatBounds();
+
+        this.coords.forEach((coord: mapboxgl.LngLatLike): void => {
+            if (this.hasMarker) {
+                createMarker(coord).addTo(this.map);
+            }
+
+            const convertedCoord = mapboxgl.LngLat.convert(coord);
+            this.bounds.extend(new mapboxgl.LngLat(convertedCoord.lng, convertedCoord.lat));
+        });
+
+        !this.center && this.map.fitBounds(this.bounds, {
+            maxZoom: this.zoom || 12,
+            padding: 70, // in px, to make markers on the top edge visible
+            duration: 0,
+        });
     }
 }
 
