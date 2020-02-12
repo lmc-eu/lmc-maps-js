@@ -78,6 +78,9 @@ bg (Bulgarian), bs (Bosnian), cs (Czech), da (Danish), de (German), el (Greek), 
 
 See [LMC Maps homepage](https://maps.lmc.cz/) for CDN or IFrame usage.
 
+## Changelog
+For latest changes see [CHANGELOG.md](CHANGELOG.md) file. We follow [Semantic Versioning](https://semver.org/).
+
 ## Contributing and development
 
 ### Install dependencies
