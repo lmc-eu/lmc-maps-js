@@ -1,9 +1,7 @@
 /// <reference types="mapbox-gl" />
 
 declare module '@lmc-eu/lmc-maps' {
-
     declare class LmcMaps {
-
         constructor(options: MapsOptions);
 
         container: string;
@@ -31,11 +29,9 @@ declare module '@lmc-eu/lmc-maps' {
         getEvents(): void;
 
         setControls(): void;
-
     }
 
     export = LmcMaps;
-
 }
 
 declare type Languages = 'cs' | 'de' | 'en' | 'fi' | 'pl' | 'sk' | null;

@@ -1,30 +1,9 @@
-export const setLanguage = (style: any, lang: string): any => {
-    const
-        newStyle = {...style},
-        labelFallbackLayers: any[] = [];
+type FallbackLayers = {
+    placement: number;
+    data: mapboxgl.Layer;
+};
 
-    newStyle.layers.forEach((layer: any, index: number) => {
-        if (layer.id.indexOf('label') !== -1 && layer.layout['text-field']) {
-            labelFallbackLayers.push({
-                placement: index,
-                data: JSON.parse(JSON.stringify(layer))
-            });
-
-            addLayerFilter(layer, ['has', `name:${lang}`]);
-            layer.layout['text-field'] = `{name:${lang}}`;
-        }
-    });
-
-    labelFallbackLayers.forEach((layer: any, index: number) => {
-        layer.data.id = layer.data.id + '-langFallback';
-        addLayerFilter(layer.data, ['!has', `name:${lang}`]);
-        newStyle.layers.splice(layer.placement + index + 1, 0, layer.data);
-    });
-
-    return newStyle;
-}
-
-const addLayerFilter = (layer: any, filter: string[]) => {
+const addLayerFilter = (layer: mapboxgl.Layer, filter: string[]): void => {
     if (!layer.filter) {
         layer.filter = filter;
     } else if (layer.filter[0] === 'all') {
@@ -36,4 +15,31 @@ const addLayerFilter = (layer: any, filter: string[]) => {
             filter
         ];
     }
-}
+};
+
+export const setLanguage = (style: mapboxgl.Style, lang: string): mapboxgl.Style => {
+    const newStyle: mapboxgl.Style = { ...style };
+    const labelFallbackLayers: FallbackLayers[] = [];
+
+    newStyle.layers.forEach((layer: mapboxgl.Layer, index: number) => {
+        const symbolLayerLayout: mapboxgl.SymbolLayout = layer.layout;
+
+        if (layer.id.indexOf('label') !== -1 && symbolLayerLayout['text-field']) {
+            labelFallbackLayers.push({
+                placement: index,
+                data: JSON.parse(JSON.stringify(layer))
+            });
+
+            addLayerFilter(layer, ['has', `name:${lang}`]);
+            symbolLayerLayout['text-field'] = `{name:${lang}}`;
+        }
+    });
+
+    labelFallbackLayers.forEach((layer: FallbackLayers, index: number): void => {
+        layer.data.id += '-langFallback';
+        addLayerFilter(layer.data, ['!has', `name:${lang}`]);
+        newStyle.layers.splice(layer.placement + index + 1, 0, layer.data);
+    });
+
+    return newStyle;
+};

@@ -1,16 +1,16 @@
 /// <reference types="mapbox-gl" />
 
 declare module '@lmc-eu/lmc-maps' {
-
     declare class LmcMaps {
-
         constructor(options: MapsOptions);
 
         container: string;
 
         map: mapboxgl.Map;
 
-        coords: mapboxgl.LngLatLike;
+        coords: Array<mapboxgl.LngLatLike>;
+
+        center: mapboxgl.LngLatLike;
 
         zoom: number;
 
@@ -29,11 +29,9 @@ declare module '@lmc-eu/lmc-maps' {
         getEvents(): void;
 
         setControls(): void;
-
     }
 
     export = LmcMaps;
-
 }
 
 declare type Languages = 'cs' | 'de' | 'en' | 'fi' | 'pl' | 'sk' | null;
@@ -44,7 +42,9 @@ declare type MapsOptions = {
 
     container: string;
 
-    coords?: mapboxgl.LngLatLike;
+    coords?: Array<mapboxgl.LngLatLike>;
+
+    center: mapboxgl.LngLatLike;
 
     zoom?: number;
 

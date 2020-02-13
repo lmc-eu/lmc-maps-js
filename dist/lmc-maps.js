@@ -30,25 +30,6 @@ var __assign = function() {
     return __assign.apply(this, arguments);
 };
 
-var setLanguage = function (style, lang) {
-    var newStyle = __assign({}, style), labelFallbackLayers = [];
-    newStyle.layers.forEach(function (layer, index) {
-        if (layer.id.indexOf('label') !== -1 && layer.layout['text-field']) {
-            labelFallbackLayers.push({
-                placement: index,
-                data: JSON.parse(JSON.stringify(layer))
-            });
-            addLayerFilter(layer, ['has', "name:" + lang]);
-            layer.layout['text-field'] = "{name:" + lang + "}";
-        }
-    });
-    labelFallbackLayers.forEach(function (layer, index) {
-        layer.data.id = layer.data.id + '-langFallback';
-        addLayerFilter(layer.data, ['!has', "name:" + lang]);
-        newStyle.layers.splice(layer.placement + index + 1, 0, layer.data);
-    });
-    return newStyle;
-};
 var addLayerFilter = function (layer, filter) {
     if (!layer.filter) {
         layer.filter = filter;
@@ -64,7 +45,33 @@ var addLayerFilter = function (layer, filter) {
         ];
     }
 };
+var setLanguage = function (style, lang) {
+    var newStyle = __assign({}, style);
+    var labelFallbackLayers = [];
+    newStyle.layers.forEach(function (layer, index) {
+        var symbolLayerLayout = layer.layout;
+        if (layer.id.indexOf('label') !== -1 && symbolLayerLayout['text-field']) {
+            labelFallbackLayers.push({
+                placement: index,
+                data: JSON.parse(JSON.stringify(layer))
+            });
+            addLayerFilter(layer, ['has', "name:" + lang]);
+            symbolLayerLayout['text-field'] = "{name:" + lang + "}";
+        }
+    });
+    labelFallbackLayers.forEach(function (layer, index) {
+        layer.data.id += '-langFallback';
+        addLayerFilter(layer.data, ['!has', "name:" + lang]);
+        newStyle.layers.splice(layer.placement + index + 1, 0, layer.data);
+    });
+    return newStyle;
+};
 
+var setMarkerStyle = function () {
+    var el = document.createElement('div');
+    el.className = 'lmc-maps__marker';
+    return el;
+};
 var createMarker = function (coords) {
     var marker = new mapboxgl.Marker({
         element: setMarkerStyle(),
@@ -73,17 +80,13 @@ var createMarker = function (coords) {
     }).setLngLat(coords);
     return marker;
 };
-var setMarkerStyle = function () {
-    var el = document.createElement('div');
-    el.className = 'lmc-maps__marker';
-    return el;
-};
 
 var LmcMaps = /** @class */ (function () {
     function LmcMaps(options) {
         this.container = options.container;
-        this.coords = options.coords || [14.4563172, 50.1028914];
-        this.zoom = options.zoom || 12;
+        this.coords = options.coords;
+        this.center = options.center;
+        this.zoom = options.zoom;
         this.style = options.style || STYLES.DEFAULT;
         this.lang = options.lang;
         this.hasMarker = options.hasMarker;
@@ -96,24 +99,20 @@ var LmcMaps = /** @class */ (function () {
         this.map = new mapboxgl.Map({
             container: this.container,
             style: this.publicUrl + "/styles/" + this.style + "/style.json",
-            center: this.coords,
-            zoom: this.zoom,
+            center: this.center || [14.4563172, 50.1028914],
+            zoom: this.zoom || 12,
             renderWorldCopies: false,
             pitchWithRotate: false,
-            transformRequest: function (url, resourceType) {
-                if (_this.authToken && url.startsWith(_this.publicUrl) && resourceType === 'Tile') {
-                    return {
-                        url: url,
-                        headers: {
-                            'Authorization': 'Bearer ' + _this.authToken
-                        }
-                    };
-                }
-            }
+            transformRequest: function (url, resourceType) { return ({
+                url: url,
+                headers: (_this.authToken && url.startsWith(_this.publicUrl) && resourceType === 'Tile')
+                    ? { Authorization: "Bearer " + _this.authToken }
+                    : {}
+            }); }
         });
         this.getEvents();
         this.setControls();
-        this.hasMarker && createMarker(this.coords).addTo(this.map);
+        this.coords && this.computeMapPoints();
     };
     LmcMaps.prototype.getEvents = function () {
         var _this = this;
@@ -130,6 +129,22 @@ var LmcMaps = /** @class */ (function () {
         this.map.addControl(new mapboxgl.ScaleControl({
             maxWidth: 80
         }));
+    };
+    LmcMaps.prototype.computeMapPoints = function () {
+        var _this = this;
+        this.bounds = new mapboxgl.LngLatBounds();
+        this.coords.forEach(function (coord) {
+            if (_this.hasMarker) {
+                createMarker(coord).addTo(_this.map);
+            }
+            var convertedCoord = mapboxgl.LngLat.convert(coord);
+            _this.bounds.extend(new mapboxgl.LngLat(convertedCoord.lng, convertedCoord.lat));
+        });
+        !this.center && this.map.fitBounds(this.bounds, {
+            maxZoom: this.zoom || 12,
+            padding: 70,
+            duration: 0
+        });
     };
     return LmcMaps;
 }());

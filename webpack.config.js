@@ -17,9 +17,10 @@ module.exports = () => {
                 {
                     test: /\.tsx?$/,
                     exclude: /(node_modules)/,
-                    use: {
-                        loader: 'awesome-typescript-loader'
-                    }
+                    use: [
+                        'awesome-typescript-loader',
+                        'eslint-loader'
+                    ]
                 },{
                     test: /\.(css|s[ac]ss)$/,
                     use: [
