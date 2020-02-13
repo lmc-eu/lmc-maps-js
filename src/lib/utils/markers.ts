@@ -1,5 +1,12 @@
 import mapboxgl from 'mapbox-gl';
 
+const setMarkerStyle = (): HTMLDivElement => {
+    const el = document.createElement('div');
+    el.className = 'lmc-maps__marker';
+
+    return el;
+};
+
 export const createMarker = (coords: mapboxgl.LngLatLike): mapboxgl.Marker => {
     const marker = new mapboxgl.Marker({
         element: setMarkerStyle(),
@@ -8,11 +15,4 @@ export const createMarker = (coords: mapboxgl.LngLatLike): mapboxgl.Marker => {
     }).setLngLat(coords);
 
     return marker;
-}
-
-const setMarkerStyle = (): HTMLDivElement => {
-    const el = document.createElement('div');
-    el.className = 'lmc-maps__marker';
-
-    return el;
-}
+};

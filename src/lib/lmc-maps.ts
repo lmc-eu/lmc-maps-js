@@ -11,7 +11,6 @@ import { createMarker } from './utils/markers';
 declare const TILESERVER_URL: string;
 
 class LmcMaps {
-
     container: string;
 
     map: mapboxgl.Map;
@@ -41,7 +40,7 @@ class LmcMaps {
 
         this.center = options.center;
 
-        this.zoom = options.zoom ;
+        this.zoom = options.zoom;
 
         this.style = options.style || STYLES.DEFAULT;
 
@@ -64,16 +63,12 @@ class LmcMaps {
             zoom: this.zoom || 12,
             renderWorldCopies: false,
             pitchWithRotate: false,
-            transformRequest: (url, resourceType) => {
-                if (this.authToken && url.startsWith(this.publicUrl) && resourceType === 'Tile') {
-                    return {
-                        url: url,
-                        headers: {
-                            'Authorization': 'Bearer ' + this.authToken
-                        }
-                    }
-                }
-            }
+            transformRequest: (url: string, resourceType: mapboxgl.ResourceType) => ({
+                url,
+                headers: (this.authToken && url.startsWith(this.publicUrl) && resourceType === 'Tile')
+                    ? { Authorization: `Bearer ${this.authToken}` }
+                    : {}
+            })
         });
 
         this.getEvents();
@@ -116,7 +111,7 @@ class LmcMaps {
         !this.center && this.map.fitBounds(this.bounds, {
             maxZoom: this.zoom || 12,
             padding: 70, // in px, to make markers on the top edge visible
-            duration: 0,
+            duration: 0
         });
     }
 }
