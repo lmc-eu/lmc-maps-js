@@ -97,6 +97,7 @@ class LmcMaps {
     }
 
     computeMapPoints() {
+
         this.bounds = new mapboxgl.LngLatBounds();
 
         this.coords.forEach((coord: mapboxgl.LngLatLike): void => {
@@ -109,7 +110,7 @@ class LmcMaps {
         });
 
         !this.center && this.map.fitBounds(this.bounds, {
-            maxZoom: this.zoom || 12,
+           maxZoom: this.zoom || 12,
             padding: 70, // in px, to make markers on the top edge visible
             duration: 0
         });

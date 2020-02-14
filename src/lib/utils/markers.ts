@@ -15,4 +15,4 @@ export const createMarker = (coords: mapboxgl.LngLatLike): mapboxgl.Marker => {
     }).setLngLat(coords);
 
     return marker;
-};
+}

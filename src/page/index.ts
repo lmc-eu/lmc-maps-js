@@ -5,6 +5,7 @@ import './index.scss';
 import { Languages } from '../lib/types';
 
 (() => {
+
     const urlParams: URLSearchParams = new URL(window.location.href).searchParams;
 
     const coords: [[number, number]] = urlParams.get('lng') && urlParams.get('lat')
