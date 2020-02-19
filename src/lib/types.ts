@@ -6,7 +6,7 @@ export type MapsOptions = {
     style?: MapStyle;
     lang?: Languages;
     hasMarker?: boolean;
-    authToken: string;
+    authToken?: string;
     publicUrl?: string;
 };
 

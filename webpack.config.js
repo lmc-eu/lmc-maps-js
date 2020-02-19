@@ -45,7 +45,7 @@ module.exports = () => {
                 template: 'assets/index.html'
             }),
             new webpack.DefinePlugin({
-                'TILESERVER_URL': JSON.stringify('http://localhost:8080')
+                'TILESERVER_URL': JSON.stringify('https://tileserver.lmc.cz/demo')
             })
         ],
         devServer: {
