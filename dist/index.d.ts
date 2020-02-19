@@ -54,7 +54,7 @@ declare type MapsOptions = {
 
     hasMarker?: boolean;
 
-    authToken: string;
+    authToken?: string;
 
     publicUrl?: string;
 
