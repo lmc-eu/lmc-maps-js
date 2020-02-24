@@ -8,7 +8,12 @@ Changelog rules:
 -->
 
 ## Unreleased
-- BC break: `coords` property requires array of arrays to support multiple points with markers.
+
+## [0.3.0] - 2020-02-24
+### Added
 - Add optional `center` property to set default map center.
 - Add eslint with typescript options.
+
+### Changed
+- BC break: `coords` property requires array of arrays to support multiple points with markers.
 - Use demo tileserver for devel without authToken, but with max rate limit for tile requests.
