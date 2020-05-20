@@ -43,15 +43,15 @@ import LmcMaps from '@lmc-eu/lmc-maps';
     new LmcMaps({
         container: 'lmcMapId',
         coords: [[15.524, 49.766], [15.481, 49.758]],
-        center: [15.520, 49.760]
+        center: [15.520, 49.760],
         zoom: 7,
         style: 'lmc-default',
         marker: true,
         lang: 'cs',
-        // authToken is not needed for development purposes, but requests will have low rate limit.
-        // authToken: 'YOUR_TOKEN'
-        // Uncomment following publicUrl if you have your own authToken:
-        // publicUrl: 'https://tileserver.lmc.cz'
+        // Default tileserver require use of authToken. You can override default to use our "demo tileserver" for demonstration and development purposes:
+        publicUrl: 'https://tileserver.lmc.cz/demo' // DO NOT use demo tileserver on production! (It has low rate limit.)
+        // authToken is not needed for "demo tileserver", but requests will have low rate limit.
+        // authToken: 'YOUR_TOKEN' // DO NOT FORGET to define auth token for production use
     });
 })();
 ```
@@ -67,8 +67,8 @@ import LmcMaps from '@lmc-eu/lmc-maps';
 | hasMarker   | Show marker in center of map (optional) | boolean
 | style       | Style id (default: lmc-default) ([see supported styles](https://maps.lmc.cz/#styles))  | string
 | lang        | Language of labels in map ([see supported languages](#supported-languages)) (default: native) | string
-| authToken   | Your Authorization token (required) | string
-| publicUrl   | Url to tileserver (default https://tileserver.lmc.cz) ([see more info](#tileserver)) | string
+| authToken   | Your authorization token (must be defined for production use) | string
+| publicUrl   | Url to tileserver (default `https://tileserver.lmc.cz`) ([see more info](#tileserver)) | string
 
 #### Supported languages <a name="supported-languages"></a>
 
@@ -76,11 +76,13 @@ Currently are supported these languages:
 
 bg (Bulgarian), bs (Bosnian), cs (Czech), da (Danish), de (German), el (Greek), en (English), es (Spanish), et (Estonian), fi (Finnish), fr (French), hr (Croatian), hu (Hungarian), is (Icelandic), it (Italian), lt (Lithuanian), lv (Latvian), mk (Macedonian), nl (Dutch), pl (Polish), pt (Portuguese), ro (Romania), ru (Russian), sk (Slovak), sl (Slovene), sq (Albanian), sr (Serbian), sv (Swedish), tr (Turkish), uk (Ukrainian)
 
-#### Tileserver URL <a name="tileserver"></a>
+#### Tileserver `publicUrl` and `authToken` <a name="tileserver"></a>
 
-Default tileserver `publicUrl` is set to demo tileserver (`https://tileserver.lmc.cz/demo`), which could be used during development. It does not need `authToken`, but is has low rate limits for tiles requests and **must not** be used on production.
+Default tileserver `publicUrl` is set to `https://tileserver.lmc.cz`, but this tilserver can only be used with your own `authToken`.
 
-For production usage you need to set `authToken` and use production tileserver (which is eg. `https://tileserver.lmc.cz`).
+If you don't have authToken yet (eg. during development), you can use demo tileserver by setting `publicUrl` to `https://tileserver.lmc.cz/demo`. This tileserver does not need `authToken`, but it has low rate limit for tiles requests and thus **must not** be used on production.
+
+For production use you need to set `authToken` and use production tileserver (for example `https://tileserver.lmc.cz` - which is also default, so you can omit defining `publicUrl` entirely).
 
 If you run your own tileserver, you can set tileserver path in `publicUrl` option, e.g. `http://localhost:8080` for your local tileserver.
 
