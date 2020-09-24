@@ -1,12 +1,13 @@
-import mapboxgl from 'mapbox-gl';
+import mapboxgl, { PointLike, MapMouseEvent, MapboxGeoJSONFeature } from 'mapbox-gl';
 
 import './lmc-maps.scss';
 
 import { MapsOptions, Languages, MapStyle } from './types';
-import { STYLES } from './constants';
+import { STYLES, EVENTS, FEATURE_LAYERS } from './constants';
 
 import { setLanguage } from './utils/languages';
 import { createMarker } from './utils/markers';
+import { createPopup } from './utils/popups';
 
 declare const TILESERVER_URL: string;
 
@@ -73,6 +74,13 @@ class LmcMaps {
 
         this.getEvents();
 
+        this.enableFeatureClick([
+            FEATURE_LAYERS.POI.BUS_STOPS,
+            FEATURE_LAYERS.POI.TRAM_STOPS,
+            FEATURE_LAYERS.POI.RAILWAY_STATIONS,
+            FEATURE_LAYERS.POI.SUBWAY_STATIONS
+        ]);
+
         this.setControls();
 
         this.coords && this.computeMapPoints();
@@ -86,6 +94,30 @@ class LmcMaps {
         });
     }
 
+    enableFeatureClick(layers: string[]) {
+        layers.forEach((layer) => {
+            this.map.on('mouseenter', layer, () => {
+                this.map.getCanvas().style.cursor = 'pointer';
+            });
+
+            this.map.on('mouseleave', layer, () => {
+                this.map.getCanvas().style.cursor = '';
+            });
+        });
+
+        this.map.on('click', (e: MapMouseEvent) => {
+            const point: [PointLike, PointLike] = [
+                [e.point.x - EVENTS.CLICK.POINTER_BBOX, e.point.y - EVENTS.CLICK.POINTER_BBOX],
+                [e.point.x + EVENTS.CLICK.POINTER_BBOX, e.point.y + EVENTS.CLICK.POINTER_BBOX]
+            ];
+
+            const features = this.getPointFeatures(point, layers);
+            features.forEach((feature) => {
+                createPopup(feature)?.addTo(this.map);
+            });
+        });
+    }
+
     setControls() {
         this.map.addControl(new mapboxgl.NavigationControl({
             showCompass: false
@@ -94,6 +126,12 @@ class LmcMaps {
         this.map.addControl(new mapboxgl.ScaleControl({
             maxWidth: 80
         }));
+    }
+
+    getPointFeatures(point: [PointLike, PointLike], layers: string[]): MapboxGeoJSONFeature[] {
+        return this.map.queryRenderedFeatures(point, {
+            layers
+        }).filter((feature) => feature.geometry.type === 'Point');
     }
 
     computeMapPoints() {
