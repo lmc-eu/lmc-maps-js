@@ -8,6 +8,8 @@ Changelog rules:
 -->
 
 ## Unreleased
+### Added
+- Click on POIs (currently public transport stations) opens popup with more information (if enabled using `hasInteractivePois` option).
 
 ## [0.3.0] - 2020-02-24
 ### Added
