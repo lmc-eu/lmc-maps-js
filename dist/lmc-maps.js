@@ -3,20 +3,33 @@ import mapboxgl from 'mapbox-gl';
 var STYLES = {
     DEFAULT: 'lmc-default'
 };
+var EVENTS = {
+    CLICK: {
+        POINTER_BBOX: 10
+    }
+};
+var FEATURE_LAYERS = {
+    POI: {
+        BUS_STOPS: 'label_poi-bus',
+        SUBWAY_STATIONS: 'label_poi-subway',
+        TRAM_STOPS: 'label_poi-tram-stop',
+        RAILWAY_STATIONS: 'label_poi-railway-station'
+    }
+};
 
 /*! *****************************************************************************
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use
-this file except in compliance with the License. You may obtain a copy of the
-License at http://www.apache.org/licenses/LICENSE-2.0
+Copyright (c) Microsoft Corporation.
 
-THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
-WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
-MERCHANTABLITY OR NON-INFRINGEMENT.
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
 
-See the Apache Version 2.0 License for specific language governing permissions
-and limitations under the License.
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
 ***************************************************************************** */
 
 var __assign = function() {
@@ -81,6 +94,21 @@ var createMarker = function (coords) {
     return marker;
 };
 
+var createPopup = function (feature) {
+    if (feature.geometry.type !== 'Point') {
+        return null;
+    }
+    var _a = feature.geometry.coordinates, lon = _a[0], lat = _a[1];
+    var popup = new mapboxgl.Popup({
+        offset: [0, -12],
+        closeButton: false,
+        className: 'lmc-maps__popup'
+    })
+        .setLngLat({ lon: lon, lat: lat })
+        .setHTML("<div>" + feature.properties.name + "</div>");
+    return popup;
+};
+
 var LmcMaps = /** @class */ (function () {
     function LmcMaps(options) {
         this.container = options.container;
@@ -90,6 +118,7 @@ var LmcMaps = /** @class */ (function () {
         this.style = options.style || STYLES.DEFAULT;
         this.lang = options.lang;
         this.hasMarker = options.hasMarker;
+        this.hasInteractivePois = options.hasInteractivePois;
         this.authToken = options.authToken;
         this.publicUrl = options.publicUrl || "https://tileserver.lmc.cz";
         this.init();
@@ -111,6 +140,12 @@ var LmcMaps = /** @class */ (function () {
             }); }
         });
         this.getEvents();
+        this.hasInteractivePois && this.enableFeatureClick([
+            FEATURE_LAYERS.POI.BUS_STOPS,
+            FEATURE_LAYERS.POI.TRAM_STOPS,
+            FEATURE_LAYERS.POI.RAILWAY_STATIONS,
+            FEATURE_LAYERS.POI.SUBWAY_STATIONS
+        ]);
         this.setControls();
         this.coords && this.computeMapPoints();
     };
@@ -122,6 +157,28 @@ var LmcMaps = /** @class */ (function () {
             });
         });
     };
+    LmcMaps.prototype.enableFeatureClick = function (layers) {
+        var _this = this;
+        layers.forEach(function (layer) {
+            _this.map.on('mouseenter', layer, function () {
+                _this.map.getCanvas().style.cursor = 'pointer';
+            });
+            _this.map.on('mouseleave', layer, function () {
+                _this.map.getCanvas().style.cursor = '';
+            });
+        });
+        this.map.on('click', function (e) {
+            var point = [
+                [e.point.x - EVENTS.CLICK.POINTER_BBOX, e.point.y - EVENTS.CLICK.POINTER_BBOX],
+                [e.point.x + EVENTS.CLICK.POINTER_BBOX, e.point.y + EVENTS.CLICK.POINTER_BBOX]
+            ];
+            var features = _this.getPointFeatures(point, layers);
+            features.forEach(function (feature) {
+                var _a;
+                (_a = createPopup(feature)) === null || _a === void 0 ? void 0 : _a.addTo(_this.map);
+            });
+        });
+    };
     LmcMaps.prototype.setControls = function () {
         this.map.addControl(new mapboxgl.NavigationControl({
             showCompass: false
@@ -129,6 +186,11 @@ var LmcMaps = /** @class */ (function () {
         this.map.addControl(new mapboxgl.ScaleControl({
             maxWidth: 80
         }));
+    };
+    LmcMaps.prototype.getPointFeatures = function (point, layers) {
+        return this.map.queryRenderedFeatures(point, {
+            layers: layers
+        }).filter(function (feature) { return feature.geometry.type === 'Point'; });
     };
     LmcMaps.prototype.computeMapPoints = function () {
         var _this = this;
