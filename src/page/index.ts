@@ -16,6 +16,7 @@ import { Languages } from '../lib/types';
     const lang: Languages = urlParams.get('lang') as Languages;
     const zoom: number = parseInt(urlParams.get('zoom'), 10);
     const hasMarker: boolean = urlParams.get('hasMarker') !== null;
+    const hasInteractivePois: boolean = urlParams.get('hasInteractivePois') !== null;
 
     const mapIgnored = new LmcMaps({
         container: 'map',
@@ -23,6 +24,7 @@ import { Languages } from '../lib/types';
         zoom,
         style: 'lmc-default',
         lang,
-        hasMarker
+        hasMarker,
+        hasInteractivePois
     });
 })();
