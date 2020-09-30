@@ -30,6 +30,8 @@ class LmcMaps {
 
     hasMarker: boolean;
 
+    hasInteractivePois: boolean;
+
     authToken: string;
 
     publicUrl: string;
@@ -48,6 +50,8 @@ class LmcMaps {
         this.lang = options.lang;
 
         this.hasMarker = options.hasMarker;
+
+        this.hasInteractivePois = options.hasInteractivePois;
 
         this.authToken = options.authToken;
 
@@ -74,7 +78,7 @@ class LmcMaps {
 
         this.getEvents();
 
-        this.enableFeatureClick([
+        this.hasInteractivePois && this.enableFeatureClick([
             FEATURE_LAYERS.POI.BUS_STOPS,
             FEATURE_LAYERS.POI.TRAM_STOPS,
             FEATURE_LAYERS.POI.RAILWAY_STATIONS,

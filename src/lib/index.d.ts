@@ -20,6 +20,8 @@ declare module '@lmc-eu/lmc-maps' {
 
         hasMarker: boolean;
 
+        hasInteractivePois: boolean;
+
         authToken: string;
 
         publicUrl: string;
@@ -53,6 +55,8 @@ declare type MapsOptions = {
     lang?: Languages;
 
     hasMarker?: boolean;
+
+    hasInteractivePois?: boolean;
 
     authToken?: string;
 

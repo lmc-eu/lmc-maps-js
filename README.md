@@ -47,6 +47,7 @@ import LmcMaps from '@lmc-eu/lmc-maps';
         zoom: 7,
         style: 'lmc-default',
         marker: true,
+        hasInteractivePois: true,
         lang: 'cs',
         // Default tileserver require use of authToken. You can override default to use our "demo tileserver" for demonstration and development purposes:
         publicUrl: 'https://tileserver.lmc.cz/demo' // DO NOT use demo tileserver on production! (It has low rate limit.)
@@ -65,6 +66,7 @@ import LmcMaps from '@lmc-eu/lmc-maps';
 | center      | LngLat Array for center of map (default [14.4563172, 50.1028914]) | array
 | zoom        | Initial zoom level of map (default: 12) | number
 | hasMarker   | Show marker in center of map (optional) | boolean
+| hasInteractivePois | Make POIs like public transport stations interactive, ie. showing popup with more information on click  (default: `false`) | boolean
 | style       | Style id (default: lmc-default) ([see supported styles](https://maps.lmc.cz/#styles))  | string
 | lang        | Language of labels in map ([see supported languages](#supported-languages)) (default: native) | string
 | authToken   | Your authorization token (must be defined for production use) | string
