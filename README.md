@@ -67,9 +67,9 @@ import LmcMaps from '@lmc-eu/lmc-maps';
 | center      | LngLat Array for center of map (default: `[14.4563172, 50.1028914]` or if markers are enabled value is computed automatically.).  | array
 | coords      | Array of LngLat Array for one or multiple markers on map | array
 | hasMarker   | Show markers passed in coords property (default: `false`) | boolean
-| hasInteractivePois | Make POIs like public transport stations interactive, ie. showing popup with more information on click  (default: `false`) | boolean
+| hasInteractivePois | Make POIs like public transport stations interactive, ie. showing popup with more information on click (default: `false`) | boolean
 | style       | Style id (default: `lmc-default`) ([see supported styles](https://maps.lmc.cz/#styles))  | string
-| lang        | Language of labels in map ([see supported languages](#supported-languages)) (default: native) | string
+| lang        | Language of labels in map ([see supported languages](#supported-languages)) (default: null = use native name) | string
 | authToken   | Your authorization token (must be defined for production use) | string
 | publicUrl   | Url to tileserver (default `https://tileserver.lmc.cz`) ([see more info](#tileserver)) | string
 
@@ -77,7 +77,7 @@ import LmcMaps from '@lmc-eu/lmc-maps';
 
 Currently supported languages:
 
-bg (Bulgarian), bs (Bosnian), cs (Czech), da (Danish), de (German), el (Greek), en (English), es (Spanish), et (Estonian), fi (Finnish), fr (French), hr (Croatian), hu (Hungarian), is (Icelandic), it (Italian), lt (Lithuanian), lv (Latvian), mk (Macedonian), nl (Dutch), pl (Polish), pt (Portuguese), ro (Romania), ru (Russian), sk (Slovak), sl (Slovene), sq (Albanian), sr (Serbian), sv (Swedish), tr (Turkish), uk (Ukrainian)
+cs (Czech), de (German), en (English), fi (Finnish), pl (Polish), sk (Slovak)
 
 #### Tileserver `publicUrl` and `authToken` <a name="tileserver"></a>
 
@@ -101,13 +101,13 @@ For latest changes see [CHANGELOG.md](CHANGELOG.md) file. We follow [Semantic Ve
 ### Install dependencies
 
 ```bash
-npm install
+yarn
 ```
 
 ### Start local Webpack dev server
 
 ```bash
-npm start
+yarn start
 ```
 
 run on `localhost:3001`
@@ -117,5 +117,5 @@ run on `localhost:3001`
 Build lib bundle to `dist` folder.
 
 ```bash
-npm run build
+yarn build
 ```

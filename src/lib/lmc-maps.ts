@@ -117,7 +117,7 @@ class LmcMaps {
 
             const features = this.getPointFeatures(point, layers);
             features.forEach((feature) => {
-                createPopup(feature)?.addTo(this.map);
+                createPopup(feature, this.lang)?.addTo(this.map);
             });
         });
     }
