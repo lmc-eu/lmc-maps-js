@@ -51,10 +51,7 @@ export const getTranslation = (lang: Languages, message: string): string => {
         return message;
     }
 
-    let langForTranslation = lang;
-    if (lang === null) {
-        langForTranslation = 'cs';
-    }
+    const langForTranslation = lang || 'cs';
 
     return TRANSLATIONS[message][langForTranslation];
 };
