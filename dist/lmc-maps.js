@@ -94,18 +94,64 @@ var createMarker = function (coords) {
     return marker;
 };
 
-var createPopup = function (feature) {
+var TRANSLATIONS = {
+    'label_poi-bus': {
+        cs: 'Zastávka autobusu',
+        de: 'Bushaltestelle',
+        en: 'Bus stop',
+        fi: 'Bussipysäkki',
+        pl: 'Przystanek autobusowy',
+        sk: 'Zastávka autobusu'
+    },
+    'label_poi-subway': {
+        cs: 'Stanice metra',
+        de: 'U-Bahnstation',
+        en: 'Subway station',
+        fi: 'Metroasema',
+        pl: 'Stacja metra',
+        sk: 'Stanica metra'
+    },
+    'label_poi-tram-stop': {
+        cs: 'Zastávka tramvaje',
+        de: 'Straßenbahnhaltestelle',
+        en: 'Tram stop',
+        fi: 'Raitiovaunupysäkki',
+        pl: 'Przystanek tramwajowy',
+        sk: 'Zastávka električky'
+    },
+    'label_poi-railway-station': {
+        cs: 'Vlaková zastávka',
+        de: 'Bahnhof',
+        en: 'Train station',
+        fi: 'Juna-asema',
+        pl: 'Przystanek kolejowy',
+        sk: 'Vlaková zastávka'
+    }
+};
+var getTranslation = function (lang, message) {
+    if (!(message in TRANSLATIONS)) {
+        return message;
+    }
+    var langForTranslation = lang || 'cs';
+    return TRANSLATIONS[message][langForTranslation];
+};
+
+var createPopup = function (feature, lang) {
     if (feature.geometry.type !== 'Point') {
         return null;
     }
     var _a = feature.geometry.coordinates, lon = _a[0], lat = _a[1];
+    var stationName = feature.properties.name;
+    if (stationName === undefined) {
+        stationName = getTranslation(lang, feature.layer.id);
+    }
     var popup = new mapboxgl.Popup({
         offset: [0, -12],
         closeButton: false,
         className: 'lmc-maps__popup'
     })
         .setLngLat({ lon: lon, lat: lat })
-        .setHTML("<div>" + feature.properties.name + "</div>");
+        .setHTML("<div>" + stationName + "</div>");
     return popup;
 };
 
@@ -175,7 +221,7 @@ var LmcMaps = /** @class */ (function () {
             var features = _this.getPointFeatures(point, layers);
             features.forEach(function (feature) {
                 var _a;
-                (_a = createPopup(feature)) === null || _a === void 0 ? void 0 : _a.addTo(_this.map);
+                (_a = createPopup(feature, _this.lang)) === null || _a === void 0 ? void 0 : _a.addTo(_this.map);
             });
         });
     };

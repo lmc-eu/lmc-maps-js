@@ -8,6 +8,8 @@ Changelog rules:
 -->
 
 ## Unreleased
+
+## [0.5.0] - 2020-11-03
 ### Changed
 - Show POI type (like "Bus stop") in popup if POI does not have its proper name in source data (instead of "undefined").
 
