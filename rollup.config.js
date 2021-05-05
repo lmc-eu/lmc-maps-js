@@ -34,7 +34,7 @@ export default {
         commonjs({extensions: ['.js', '.ts']}),
         resolve(),
         postcss({
-            extract: 'dist/lmc-maps.css',
+            extract: 'lmc-maps.css',
             extensions: ['.css', '.sass', '.scss'],
             plugins: []
         }),
