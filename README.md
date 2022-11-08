@@ -60,18 +60,18 @@ import LmcMaps from '@lmc-eu/lmc-maps';
 
 ### Options
 
-| Property    | Description | Type     |
-| :---        | :---        | :---     |
-| container   | Id of HTML element container for map | string
-| zoom        | Initial zoom level of map (default: `12`) | number
-| center      | LngLat Array for center of map (default: `[14.4563172, 50.1028914]` or if markers are enabled value is computed automatically.).  | array
-| coords      | Array of LngLat Array for one or multiple markers on map | array
-| hasMarker   | Show markers passed in coords property (default: `false`) | boolean
-| hasInteractivePois | Make POIs like public transport stations interactive, ie. showing popup with more information on click (default: `false`) | boolean
-| style       | Style id (default: `lmc-default`) ([see supported styles](https://maps.lmc.cz/#styles))  | string
-| lang        | Language of labels in map ([see supported languages](#supported-languages)) (default: null = use native name) | string
-| authToken   | Your authorization token (must be defined for production use) | string
-| publicUrl   | Url to tileserver (default `https://tileserver.lmc.cz`) ([see more info](#tileserver)) | string
+| Property           | Description                                                                                                                      | Type    |
+|:-------------------|:---------------------------------------------------------------------------------------------------------------------------------|:--------|
+| container          | Id of HTML element container for map                                                                                             | string  |
+| zoom               | Initial zoom level of map (default: `12`)                                                                                        | number  |
+| center             | LngLat Array for center of map (default: `[14.4655, 50.1045]` or if markers are enabled value is computed automatically.). | array   |
+| coords             | Array of LngLat Array for one or multiple markers on map                                                                         | array   |
+| hasMarker          | Show markers passed in coords property (default: `false`)                                                                        | boolean |
+| hasInteractivePois | Make POIs like public transport stations interactive, ie. showing popup with more information on click (default: `false`)        | boolean |
+| style              | Style id (default: `lmc-default`) ([see supported styles](https://maps.lmc.cz/#styles))                                          | string  |
+| lang               | Language of labels in map ([see supported languages](#supported-languages)) (default: null = use native name)                    | string  |
+| authToken          | Your authorization token (must be defined for production use)                                                                    | string  |
+| publicUrl          | Url to tileserver (default `https://tileserver.lmc.cz`) ([see more info](#tileserver))                                           | string  |
 
 #### Supported languages <a name="supported-languages"></a>
 
