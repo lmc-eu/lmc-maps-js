@@ -4,10 +4,12 @@
 Changelog rules:
 - Follow Semantic Versioning (https://semver.org/) and Keep a Changelog principles (https://keepachangelog.com/).
 - There should always be "Unreleased" section at the beginning for new changelog records.
-- Changelog records should be written in present imperative and end with a dot (eg. "- Improve some feature.").
+- Changelog records should be written in present imperative and end with a dot (e.g. "- Improve some feature.").
 -->
 
 ## Unreleased
+### Changed
+- Default `center` coordinates to point to the new offices.
 
 ## [0.5.0] - 2020-11-03
 ### Changed
