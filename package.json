@@ -10,7 +10,7 @@
     "dist"
   ],
   "scripts": {
-    "start": "webpack-dev-server --config webpack.config.js",
+    "start": "webpack serve --config webpack.config.js",
     "build": "rimraf dist/* && yarn run tslint && rollup -c",
     "tslint": "eslint . --ext .ts"
   },
