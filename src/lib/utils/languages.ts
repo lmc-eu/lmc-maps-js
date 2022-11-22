@@ -1,6 +1,6 @@
 type FallbackLayers = {
     placement: number;
-    data: mapboxgl.Layer;
+    data: mapboxgl.AnyLayer;
 };
 
 const addLayerFilter = (layer: mapboxgl.Layer, filter: string[]): void => {
