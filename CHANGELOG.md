@@ -8,9 +8,11 @@ Changelog rules:
 -->
 
 ## Unreleased
+
+## [0.5.1] - 2022-11-24
 ### Changed
 - Default `center` coordinates to point to the new offices.
-- Update dependencies
+- Update dependencies.
 
 ## [0.5.0] - 2020-11-03
 ### Changed

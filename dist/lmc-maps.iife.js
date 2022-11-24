@@ -177,7 +177,7 @@ var LmcMaps = (function (mapboxgl) {
             this.map = new mapboxgl.Map({
                 container: this.container,
                 style: this.publicUrl + "/styles/" + this.style + "/style.json",
-                center: this.center || [14.4563172, 50.1028914],
+                center: this.center || [14.4655, 50.1045],
                 zoom: this.zoom || 12,
                 renderWorldCopies: false,
                 pitchWithRotate: false,
