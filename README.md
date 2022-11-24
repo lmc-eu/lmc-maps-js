@@ -1,10 +1,10 @@
 # LMC Maps - JavaScript library
 
-![npm](https://img.shields.io/npm/v/@lmc-eu/lmc-maps?color=green&style=flat-square)
+[![npm version](https://img.shields.io/npm/v/@lmc-eu/lmc-maps.svg)](https://www.npmjs.com/package/@lmc-eu/lmc-maps)
 
 JavaScript client library for simple use of [LMC Maps service](https://maps.lmc.cz/).
 
-See [🗺 example map](https://maps.lmc.cz/map.html?lng=14.4566808&lat=50.1028639&zoom=14&hasMarker&hasInteractivePois) created using this library.
+See [🗺 example map](https://maps.lmc.cz/map.html?lng=14.4655&lat=50.1045&zoom=14&hasMarker&hasInteractivePois) created using this library.
 
 ## Installation
 
@@ -83,7 +83,7 @@ cs (Czech), de (German), en (English), fi (Finnish), pl (Polish), sk (Slovak)
 
 Default tileserver `publicUrl` is set to `https://tileserver.lmc.cz`, but this tilserver can only be used with your own `authToken`.
 
-If you don't have `authToken` yet (eg. during development), you can use demo tileserver by setting `publicUrl` to `https://tileserver.lmc.cz/demo`. This tileserver does not need `authToken`, but it has low rate limit for tiles requests and thus **must not** be used on production.
+If you don't have `authToken` yet (for example during development), you can use demo tileserver by setting `publicUrl` to `https://tileserver.lmc.cz/demo`. This tileserver does not need `authToken`, but it has low rate limit for tiles requests and thus **must not** be used on production.
 
 For production use you need to set `authToken` and use production tileserver (for example `https://tileserver.lmc.cz` - which is also default, so you can omit defining `publicUrl` entirely).
 
