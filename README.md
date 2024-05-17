@@ -1,5 +1,13 @@
 # LMC Maps - JavaScript library
 
+## Deprecated
+
+The public LMC maps website has been deprecated. It shall be abandoned and shut down in early 2025. All
+internal updates will be done in the private [almacareer/gis-tileserverWeb](https://github.com/almacareer/gis-tileserverWeb)
+mirror.
+
+---
+
 [![npm version](https://img.shields.io/npm/v/@lmc-eu/lmc-maps.svg)](https://www.npmjs.com/package/@lmc-eu/lmc-maps)
 
 JavaScript client library for simple use of [LMC Maps service](https://maps.lmc.cz/).
